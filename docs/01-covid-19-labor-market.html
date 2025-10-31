@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Hiroto Tensho">
-<meta name="dcterms.date" content="2025-10-31">
 
-<title>Data Science Portfolio</title>
+<title>1&nbsp; 研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響 – Data Science Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -32,7 +50,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01-covid-19-labor-market.html" rel="next">
+<link href="./02-typeII-tobit.html" rel="next">
+<link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -84,7 +103,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Readme</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-covid-19-labor-market.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -114,13 +133,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Readme</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-covid-19-labor-market.html" class="sidebar-item-text sidebar-link">
+  <a href="./01-covid-19-labor-market.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span></a>
   </div>
 </li>
@@ -146,35 +165,26 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#readme" id="toc-readme" class="nav-link active" data-scroll-target="#readme">Readme</a></li>
+  <li><a href="#背景と目的" id="toc-背景と目的" class="nav-link active" data-scroll-target="#背景と目的"><span class="header-section-number">1.1</span> 背景と目的</a></li>
+  <li><a href="#使用データと手法" id="toc-使用データと手法" class="nav-link" data-scroll-target="#使用データと手法"><span class="header-section-number">1.2</span> 使用データと手法</a></li>
+  <li><a href="#分析結果のポイント" id="toc-分析結果のポイント" class="nav-link" data-scroll-target="#分析結果のポイント"><span class="header-section-number">1.3</span> 分析結果のポイント</a></li>
+  <li><a href="#考察" id="toc-考察" class="nav-link" data-scroll-target="#考察"><span class="header-section-number">1.4</span> 考察</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/01-covid-19-labor-market.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Science Portfolio</h1>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Hiroto Tensho </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">2025-10-31</p>
-    </div>
-  </div>
   
     
   </div>
@@ -184,11 +194,56 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="readme" class="level1 unnumbered">
-<h1 class="unnumbered">Readme</h1>
-<p>ここに要約版の目次やリンクを置きます。</p>
+<section id="背景と目的" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="背景と目的"><span class="header-section-number">1.1</span> 背景と目的</h2>
+<p>　2019年末に始まったコロナ禍は、企業が休業やリモートワークへの切り替えを余儀なくされるなど、雇用環境に大きな影響を与えました。特に新卒者の就職市場では、小売、レジャー、空運など外出制限の影響を受けやすい業界・業種で、採用計画の削減や採用中止が相次ぎました。<br>
+　本研究では、コロナ禍以降に卒業した世代が賃金・就業・雇用形態の面で不利だったかを、明らかにすることを目的として、全国就業実態パネル調査（JPSED）で定量的評価を行いました。</p>
+</section>
+<section id="使用データと手法" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="使用データと手法"><span class="header-section-number">1.2</span> 使用データと手法</h2>
+<p>　使用したデータは次のとおりです。</p>
+<ul>
+<li>データ：国就業実態パネル調査（JPSED）の個票データのうち、2017年から2022年調査までの6年分を使用。</li>
+<li>2012年以降卒・35歳未満を分析対象とした（n=32,714）。</li>
+</ul>
+<p>分析に当たって3つのリサーチクエスチョンを設定し、それぞれ次のような分析手法を採用しました。</p>
+<ol type="1">
+<li><strong>RQ1（賃金への影響）</strong>: コロナ禍以降に就職した世代は、それ以前の世代と比べて賃金が低下したか。
+<ul>
+<li>分析手法として、タイプIIトービットモデルを使用しました<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</li>
+</ul></li>
+<li><strong>RQ2（就業状態への影響）</strong>: コロナ禍以降に就職した世代は、それ以前の世代と比べて就業率が低下したか。
+<ul>
+<li>分析手法として、多項ロジットモデルを使用しました。</li>
+</ul></li>
+<li><strong>RQ3（非正規雇用率への影響）</strong>: コロナ禍以降に就職した世代は、それ以前の世代と比べて非正規雇用率が上昇したか。
+<ul>
+<li>分析手法として、プロビットモデルを使用しました。</li>
+</ul></li>
+</ol>
+<p>また、回答者を卒業年にしたがって「2018年以前」「2019年（基準）」「2020年」「2021年」という4つのコホートに分けることで、コロナ禍以降に卒業した世代が雇用面で不利だったかを明らかにすることを目指しました。</p>
+</section>
+<section id="分析結果のポイント" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="分析結果のポイント"><span class="header-section-number">1.3</span> 分析結果のポイント</h2>
+<p>　本研究では、2020年以降の学卒者の賃⾦は19年卒者と⽐べて有意に低下したとの結果が得られました。加えて、19年卒⼥性と⽐べて21年卒⼥性の⾮正規雇⽤率が有意に増加している事が分りました。新卒⼥性における⾮正規雇⽤率の増加は、就職氷河期の初期にも⾒られた現象であり、影響の⻑期化が懸念される結果でした。一方で、就業率に有意な変化は確認されず、短期的な就業意欲は大きく崩れていないと考えられます。</p>
+</section>
+<section id="考察" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="考察"><span class="header-section-number">1.4</span> 考察</h2>
+<p>　本研究の結果は、コロナ禍以降に卒業した世代が賃金と雇用形態の面で不利を抱えていることを示唆するものであった。太田ほか<span class="citation" data-cites="太田ほか2007">(<a href="90-references.html#ref-太田ほか2007" role="doc-biblioref">太田 et al., 2007</a>)</span>など、就職氷河期をめぐる先行研究で指摘されている初職効果の存在を踏まえると、影響の固定化を避けるための対策が必要になると考えられます。 　一方、本研究の限界としては2022年調査分までのデータを利用していることが挙げられます。2022年卒以降コホートの追跡、長期の影響を分析することが今後の課題と言えます。また、2023年以降は新卒初任給の上昇傾向が見られるため、最新の調査を用いた分析では異なる結果が得られるのではないかと考えられます<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-太田ほか2007" class="csl-entry" role="listitem">
+太田聰一, 玄田有史, and 近藤絢子. (2007). 「溶けない氷河―世代効果の展望：時代を背負う労働者」. <em>『日本労働研究雑誌』</em>, <em>568</em>, 97–112.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>タイプIIトービットモデルについては <a href="02-typeII-tobit.html" class="quarto-xref"><span>Chapter 2</span></a> を参照してください。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>例えば<a href="https://www.jil.go.jp/kokunai/statistics/shuyo/0303.html">「独立行政法人 労働政策研究・研修機構：新規学卒者の賃金」</a>を参照。<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -593,10 +648,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Readme">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Readme</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01-covid-19-labor-market.html" class="pagination-link" aria-label="研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02-typeII-tobit.html" class="pagination-link" aria-label="タイプIIトービットモデル">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -605,4 +663,4 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/01-covid-19-labor-market.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1&nbsp; タイプIIトービットモデル – Data Science Portfolio</title>
+<title>2&nbsp; タイプIIトービットモデル – Data Science Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -86,7 +86,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./90-references.html" rel="next">
-<link href="./index.html" rel="prev">
+<link href="./01-covid-19-labor-market.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -167,7 +167,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-typeII-tobit.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-typeII-tobit.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -203,8 +203,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-typeII-tobit.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></a>
+  <a href="./01-covid-19-labor-market.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-typeII-tobit.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -223,21 +229,21 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#要約" id="toc-要約" class="nav-link active" data-scroll-target="#要約"><span class="header-section-number">1.1</span> 要約</a></li>
-  <li><a href="#タイプiiトービットモデルの概要" id="toc-タイプiiトービットモデルの概要" class="nav-link" data-scroll-target="#タイプiiトービットモデルの概要"><span class="header-section-number">1.2</span> タイプIIトービットモデルの概要</a></li>
-  <li><a href="#heckman-の2段階推定" id="toc-heckman-の2段階推定" class="nav-link" data-scroll-target="#heckman-の2段階推定"><span class="header-section-number">1.3</span> Heckman の2段階推定</a></li>
-  <li><a href="#使用上の注意点" id="toc-使用上の注意点" class="nav-link" data-scroll-target="#使用上の注意点"><span class="header-section-number">1.4</span> 使用上の注意点</a></li>
-  <li><a href="#rによる実装" id="toc-rによる実装" class="nav-link" data-scroll-target="#rによる実装"><span class="header-section-number">1.5</span> Rによる実装</a></li>
-  <li><a href="#タイプiiトービットモデルの限界効果" id="toc-タイプiiトービットモデルの限界効果" class="nav-link" data-scroll-target="#タイプiiトービットモデルの限界効果"><span class="header-section-number">1.6</span> タイプIIトービットモデルの限界効果</a></li>
+  <li><a href="#要約" id="toc-要約" class="nav-link active" data-scroll-target="#要約"><span class="header-section-number">2.1</span> 要約</a></li>
+  <li><a href="#タイプiiトービットモデルの概要" id="toc-タイプiiトービットモデルの概要" class="nav-link" data-scroll-target="#タイプiiトービットモデルの概要"><span class="header-section-number">2.2</span> タイプIIトービットモデルの概要</a></li>
+  <li><a href="#heckman-の2段階推定" id="toc-heckman-の2段階推定" class="nav-link" data-scroll-target="#heckman-の2段階推定"><span class="header-section-number">2.3</span> Heckman の2段階推定</a></li>
+  <li><a href="#使用上の注意点" id="toc-使用上の注意点" class="nav-link" data-scroll-target="#使用上の注意点"><span class="header-section-number">2.4</span> 使用上の注意点</a></li>
+  <li><a href="#rによる実装" id="toc-rによる実装" class="nav-link" data-scroll-target="#rによる実装"><span class="header-section-number">2.5</span> Rによる実装</a></li>
+  <li><a href="#タイプiiトービットモデルの限界効果" id="toc-タイプiiトービットモデルの限界効果" class="nav-link" data-scroll-target="#タイプiiトービットモデルの限界効果"><span class="header-section-number">2.6</span> タイプIIトービットモデルの限界効果</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/01-typeII-tobit.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/02-typeII-tobit.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-type2-tobit" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></h1>
+<h1 class="title"><span id="sec-type2-tobit" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></h1>
 </div>
 
 
@@ -254,17 +260,17 @@ window.Quarto = {
 </header>
 
 
-<section id="要約" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="要約"><span class="header-section-number">1.1</span> 要約</h2>
+<section id="要約" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="要約"><span class="header-section-number">2.1</span> 要約</h2>
 <ul>
 <li>賃金やECサイトでの購買金額のように、特定の回答者（e.g.&nbsp;働いている人, ECサイトの利用者）しか観測できないデータを被説明変数とする場合に使える手法です</li>
 <li>被説明変数を観測できている人だけを対象として分析を行うと、セレクションバイアスが生じます</li>
 <li>タイプIIトービットモデルを用いることで、セレクションバイアスを避けながら分析を行うことができます</li>
 </ul>
 </section>
-<section id="タイプiiトービットモデルの概要" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="タイプiiトービットモデルの概要"><span class="header-section-number">1.2</span> タイプIIトービットモデルの概要</h2>
-<p>　個人 <span class="math inline">\(i\)</span> の賃金を <span class="math inline">\(W_i\)</span> として <span class="math inline">\(\log W_i = \boldsymbol{X}_i^\mathsf{T}\boldsymbol{\beta} + \epsilon_{2i}\)</span> で定まる回帰モデルを推定する問題を考えます。これは労働経済学ではミンサー型賃金関数と呼ばれ、年齢と所得の関係を調べる賃金プロファイルや、教育年数が所得に与える効果を調べるために用いられます<span class="citation" data-cites="川口2017 大森_永瀬2021">(<a href="90-references.html#ref-大森_永瀬2021" role="doc-biblioref">大森 &amp; 永瀬, 2021</a>; <a href="90-references.html#ref-川口2017" role="doc-biblioref">川口, 2017</a>)</span>。賃金関数の推定に当たっては、賃金 <span class="math inline">\(W_i\)</span> が就業者についてしか観測することができないことが問題となります（<a href="#fig-unobserved-wages" class="quarto-xref">図&nbsp;<span>1.1</span></a>）。<br>
+<section id="タイプiiトービットモデルの概要" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="タイプiiトービットモデルの概要"><span class="header-section-number">2.2</span> タイプIIトービットモデルの概要</h2>
+<p>　個人 <span class="math inline">\(i\)</span> の賃金を <span class="math inline">\(W_i\)</span> として <span class="math inline">\(\log W_i = \boldsymbol{X}_i^\mathsf{T}\boldsymbol{\beta} + \epsilon_{2i}\)</span> で定まる回帰モデルを推定する問題を考えます。これは労働経済学ではミンサー型賃金関数と呼ばれ、年齢と所得の関係を調べる賃金プロファイルや、教育年数が所得に与える効果を調べるために用いられます<span class="citation" data-cites="川口2017 大森_永瀬2021">(<a href="90-references.html#ref-大森_永瀬2021" role="doc-biblioref">大森 &amp; 永瀬, 2021</a>; <a href="90-references.html#ref-川口2017" role="doc-biblioref">川口, 2017</a>)</span>。賃金関数の推定に当たっては、賃金 <span class="math inline">\(W_i\)</span> が就業者についてしか観測することができないことが問題となります（<a href="#fig-unobserved-wages" class="quarto-xref">図&nbsp;<span>2.1</span></a>）。<br>
 　このような状況は、就労状況に関する社会調査で頻繁に見られます。例えばリクルートワークス研究所が実施している<a href="https://www.works-i.com/surveys/panel-surveys.html">「全国就業実態パネル調査」</a>でも、今現在働いている回答者は仕事からの年収について質問される一方で、今現在働いていない回答者は質問されない（設問の対象から外れる）ことになっています。</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -274,7 +280,7 @@ window.Quarto = {
 <img src="Image/賃金が観測できない状況.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unobserved-wages-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-図&nbsp;1.1: 一部の回答者の賃金が観測できない状況
+図&nbsp;2.1: 一部の回答者の賃金が観測できない状況
 </figcaption>
 </figure>
 </div>
@@ -282,7 +288,7 @@ window.Quarto = {
 </div>
 <p>　働いていない回答者からすれば、仕事からの年収について質問されても答えようがないので、欠測値になるのは仕方のないことです。しかし、通常の回帰分析は被説明変数に欠測値がないことが前提になっているので、何かしらの対処が必要になります。<br>
 　欠測値に対する簡単な対処法として、賃金 <span class="math inline">\(W_i\)</span> が観測されているデータだけを使って分析すること（完全ケース解析）が考えられますが、就業者と非就業者の属性に系統的な違い（例：女性や高齢者の非就業率が高い）があるなら、推定結果にバイアス（選択バイアス）が生じる可能性があります。また、非就業者について欠測値を0で埋めること（定数代入）も適切ではありません。なぜなら、現在働いていない人でも働けば一定額の賃金が得られるはずだからです<span class="citation" data-cites="末石2015">(<a href="90-references.html#ref-末石2015" role="doc-biblioref">末石, 2015, pp. 111–113</a>)</span>。<br>
-　このような課題に対して、完全ケース解析や定数代入を避けて分析を実施する方法の1つが<strong>タイプIIトービットモデル</strong>です。タイプIIトービットモデルでは、賃金が観測されるかどうか（≒ その回答者が働いているかどうか）を予測するプロビットモデルと、賃金を予測する線形モデルを組み合わせることで、選択バイアスを補正します(<a href="#fig-type2-tobit" class="quarto-xref">図&nbsp;<span>1.2</span></a>)。タイプIIトービットモデルの推定方法としては、<strong>Heckman の2段階推定</strong>と最尤法が知られていますが、どちらも<code>sampleSelection</code> パッケージの <code>heckit()</code> 関数として実装されています。</p>
+　このような課題に対して、完全ケース解析や定数代入を避けて分析を実施する方法の1つが<strong>タイプIIトービットモデル</strong>です。タイプIIトービットモデルでは、賃金が観測されるかどうか（≒ その回答者が働いているかどうか）を予測するプロビットモデルと、賃金を予測する線形モデルを組み合わせることで、選択バイアスを補正します(<a href="#fig-type2-tobit" class="quarto-xref">図&nbsp;<span>2.2</span></a>)。タイプIIトービットモデルの推定方法としては、<strong>Heckman の2段階推定</strong>と最尤法が知られていますが、どちらも<code>sampleSelection</code> パッケージの <code>heckit()</code> 関数として実装されています。</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-type2-tobit" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -291,15 +297,15 @@ window.Quarto = {
 <img src="Image/タイプIIトービットモデルの模式図.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-type2-tobit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-図&nbsp;1.2: タイプIIトービットモデルの模式図
+図&nbsp;2.2: タイプIIトービットモデルの模式図
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="heckman-の2段階推定" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="heckman-の2段階推定"><span class="header-section-number">1.3</span> Heckman の2段階推定</h2>
+<section id="heckman-の2段階推定" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="heckman-の2段階推定"><span class="header-section-number">2.3</span> Heckman の2段階推定</h2>
 <p>　ここではタイプIIトービットモデルの推定法のうち、より簡単な Heckman の2段階推定について説明します。Heckman の2段階推定は、(1) 賃金 <span class="math inline">\(W_i\)</span> が観測されるかどうかを予測するプロビットモデル（就業決定関数）、(2) 賃金を予測する線形モデル（賃金関数）を、次のような手順で組み合わせます。<br>
 　まず、賃金が観測されていれば1、観測されていなければ0となるダミー変数 <span class="math inline">\(D_i\)</span> を被説明変数として使い、 <span class="math inline">\(\boldsymbol{Z}_i\)</span> を説明変数とする、次のプロビットモデルを推定します。</p>
 <p><span id="eq-Heckman1"><span class="math display">\[
@@ -309,7 +315,7 @@ window.Quarto = {
 \Phi(D_i) &amp;= \boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma} + \epsilon_{1i}
 \end{aligned}
 \end{equation}
-\tag{1.1}\]</span></span></p>
+\tag{2.1}\]</span></span></p>
 <p>次に、推定されたプロビットモデルから <span class="math inline">\(\lambda(\boldsymbol{Z}_i^\mathsf{T} \boldsymbol{\gamma}) = \phi(\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma}) / \Phi(\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma})\)</span> として定義される<strong>逆ミルズ比</strong>を推定します。最後に、逆ミルズ比を説明変数に加えた次のモデルを最小二乗法で推定することで、セレクションバイアスが補正された回帰係数 <span class="math inline">\(\boldsymbol{\beta}\)</span> の推定値を得ることができます。</p>
 <p><span id="eq-Heckman2"><span class="math display">\[
 \large
@@ -320,10 +326,10 @@ window.Quarto = {
 + \epsilon_{2i}
 \end{aligned}
 \end{equation}
-\tag{1.2}\]</span></span></p>
+\tag{2.2}\]</span></span></p>
 </section>
-<section id="使用上の注意点" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="使用上の注意点"><span class="header-section-number">1.4</span> 使用上の注意点</h2>
+<section id="使用上の注意点" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="使用上の注意点"><span class="header-section-number">2.4</span> 使用上の注意点</h2>
 <p>タイプIIトービットモデルの使用にあたり、次の2点に注意が必要です。</p>
 <ol type="1">
 <li>プロビットモデルの説明変数 <span class="math inline">\(\boldsymbol{Z}_i\)</span> には、線形モデルの説明変数 <span class="math inline">\(\boldsymbol{X}_i\)</span> に含まれていない変数を、少なくとも追加する必要がある</li>
@@ -334,10 +340,10 @@ window.Quarto = {
 </ol>
 <p>職場の業種や現職の勤続年数、職種、肩書など、賃金以外にも非就業者については観測できない変数は数多くあります。しかし、タイプIIトービットモデルで対応できるのは被説明変数の欠測だけなので、就業者と非就業者の両方で観測できる説明変数だけを使うか、他の方法で補完するといった対応が必要です</p>
 </section>
-<section id="rによる実装" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="rによる実装"><span class="header-section-number">1.5</span> Rによる実装</h2>
+<section id="rによる実装" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="rによる実装"><span class="header-section-number">2.5</span> Rによる実装</h2>
 <div id="exm-Heckit-example1" class="example theorem">
-<p><span class="theorem-title"><strong>Example 1.1 (Heckman の2段階推定法)</strong></span> ここでは <code>sampleSelection</code> パッケージの <code>Mroz87</code>データを例にHeckman の2段階推定法を実装します。まずはサンプルデータを読み込みます。</p>
+<p><span class="theorem-title"><strong>Example 2.1 (Heckman の2段階推定法)</strong></span> ここでは <code>sampleSelection</code> パッケージの <code>Mroz87</code>データを例にHeckman の2段階推定法を実装します。まずはサンプルデータを読み込みます。</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Mroz87"</span>, <span class="at">package =</span> <span class="st">"sampleSelection"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">mutate</span>()</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -393,8 +399,8 @@ window.Quarto = {
 <p>　この結果は、春山<span class="citation" data-cites="春山2023">(<a href="90-references.html#ref-春山2023" role="doc-biblioref">2023</a>)</span>がコードを公開している <code>Heckit()</code> 関数を適用した結果と一致していました。ちなみに、<code>sampleSelection::heckit(method = "2step")</code> の結果に <code>broom::tidy()</code> を使うときは <code>broom::tidy(fit_heckit$lm)</code> で賃金関数の推定値を、<code>broom::tidy(fit_heckit$probit)</code> で就業決定関数の推定値を表示できるほか、<code>texreg::screenreg()</code> 関数にも対応しています。</p>
 </div>
 </section>
-<section id="タイプiiトービットモデルの限界効果" class="level2" data-number="1.6">
-<h2 data-number="1.6" class="anchored" data-anchor-id="タイプiiトービットモデルの限界効果"><span class="header-section-number">1.6</span> タイプIIトービットモデルの限界効果</h2>
+<section id="タイプiiトービットモデルの限界効果" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="タイプiiトービットモデルの限界効果"><span class="header-section-number">2.6</span> タイプIIトービットモデルの限界効果</h2>
 <p>　計量経済学の実証論文では、ロジスティック回帰やプロビットモデルの推定結果を<strong>限界効果</strong>（marginal effect）に変換してから掲載することがよく行われます。限界効果とは、ある説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> が僅かに変化したときに、被説明変数や予測確率がどの程度増減するかを表すもので、回帰式を説明変数 <span class="math inline">\(\boldsymbol{x}_{ij}\)</span> で偏微分したものとして定義されます。<br>
 　タイプIIトービットモデルについても、次式によって限界効果を計算できることが知られています<span class="citation" data-cites="ダハナ_勝又2023 Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">Hoffmann &amp; Kassouf, 2005</a>; <a href="90-references.html#ref-ダハナ_勝又2023" role="doc-biblioref">ダハナ &amp; 勝又, 2023, pp. 139–140</a>)</span>。</p>
 <p><span id="eq-Heckit-mfx3"><span class="math display">\[
@@ -412,16 +418,16 @@ ME(x_{ij}) &amp;= \frac{\partial}{\partial x_{i, j}}\log E[W_i]
 + \lambda(\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma})]
 \end{aligned}
 \end{equation}
-\tag{1.3}\]</span></span></p>
-<p><a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>1.3</span></a> の限界効果には、条件付き限界効果 <span class="math inline">\(e_I\)</span>、間接効果 <span class="math inline">\(e_{II}\)</span>、条件なしの限界効果 <span class="math inline">\(ME(x_{ij})\)</span> の3通りに分解できるという特徴があり、それぞれの項には次のような意味があります<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">Hoffmann &amp; Kassouf, 2005</a>)</span>。</p>
+\tag{2.3}\]</span></span></p>
+<p><a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>2.3</span></a> の限界効果には、条件付き限界効果 <span class="math inline">\(e_I\)</span>、間接効果 <span class="math inline">\(e_{II}\)</span>、条件なしの限界効果 <span class="math inline">\(ME(x_{ij})\)</span> の3通りに分解できるという特徴があり、それぞれの項には次のような意味があります<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">Hoffmann &amp; Kassouf, 2005</a>)</span>。</p>
 <ul>
 <li><span class="math inline">\(e_I\)</span> <strong>条件付き限界効果</strong>（conditional marginal effect）： 説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> の変化が就業者の賃金に与える効果を表す</li>
 <li><span class="math inline">\(e_{II}\)</span> <strong>間接効果</strong>：説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> の変化が、就業率の変化を通じて間接的に賃金を変化させる効果</li>
 <li><span class="math inline">\(ME(x_{ij})\)</span> <strong>条件なしの限界効果</strong>（unconditional marginal effect）：説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> の変化が就業者と非就業者の全体の賃金に与える効果を表す</li>
 </ul>
-<p>　例えば Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005, p. 12</a>)</span>は、実証分析に <a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>1.3</span></a> の分解を利用することで、ブラジルの女性の教育年数が1年伸びることが、勤労女性の収入を11.6%上昇させると同時に、女性の労働市場参加率を5.2%増加させることで、女性全体の所得を17.4％増加させる効果を持つと報告しています。　　 　このように、教育年数が収入に与える効果をより豊かな洞察をもたらす形で提示できることは、タイプIIトービットモデルを用いる利点の1つだと言えるでしょう。</p>
+<p>　例えば Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005, p. 12</a>)</span>は、実証分析に <a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>2.3</span></a> の分解を利用することで、ブラジルの女性の教育年数が1年伸びることが、勤労女性の収入を11.6%上昇させると同時に、女性の労働市場参加率を5.2%増加させることで、女性全体の所得を17.4％増加させる効果を持つと報告しています。　　 　このように、教育年数が収入に与える効果をより豊かな洞察をもたらす形で提示できることは、タイプIIトービットモデルを用いる利点の1つだと言えるでしょう。</p>
 <div id="exm-Heckit-example3" class="example theorem">
-<p><span class="theorem-title"><strong>Example 1.2 (タイプIIトービットモデルの限界効果)</strong></span> ここではタイプIIトービットモデルの限界効果をRで実装します。ダハナ, 勝又<span class="citation" data-cites="ダハナ_勝又2023">(<a href="90-references.html#ref-ダハナ_勝又2023" role="doc-biblioref">2023, pp. 139–140</a>)</span>と Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005</a>)</span>、そして <a href="https://github.com/santosglauber/heckitmfx/tree/main/R"><code>heckitmfx</code></a>パッケージの <a href="https://github.com/santosglauber/heckitmfx/blob/main/R/heckitmfx_log.R"><code>heckitmfx::heckitmfx_log()</code></a> 関数の実装を参考に、<a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>1.3</span></a> の限界効果をRの関数として実装します。</p>
+<p><span class="theorem-title"><strong>Example 2.2 (タイプIIトービットモデルの限界効果)</strong></span> ここではタイプIIトービットモデルの限界効果をRで実装します。ダハナ, 勝又<span class="citation" data-cites="ダハナ_勝又2023">(<a href="90-references.html#ref-ダハナ_勝又2023" role="doc-biblioref">2023, pp. 139–140</a>)</span>と Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005</a>)</span>、そして <a href="https://github.com/santosglauber/heckitmfx/tree/main/R"><code>heckitmfx</code></a>パッケージの <a href="https://github.com/santosglauber/heckitmfx/blob/main/R/heckitmfx_log.R"><code>heckitmfx::heckitmfx_log()</code></a> 関数の実装を参考に、<a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>2.3</span></a> の限界効果をRの関数として実装します。</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>heckitmfx.R</strong></pre>
@@ -553,7 +559,7 @@ ME(x_{ij}) &amp;= \frac{\partial}{\partial x_{i, j}}\log E[W_i]
 <span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
 <span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>　<a href="#exm-Heckit-example1" class="quarto-xref">例題&nbsp;<span>1.1</span></a> で推定したモデル（fit_heckit）に対して <code>heckitmfx()</code> を実行すると、次のような結果が得られます。</p>
+<p>　<a href="#exm-Heckit-example1" class="quarto-xref">例題&nbsp;<span>2.1</span></a> で推定したモデル（fit_heckit）に対して <code>heckitmfx()</code> を実行すると、次のような結果が得られます。</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| paged-print: false</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2段階推定に基づく結果</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">heckitmfx</span>(fit_heckit) <span class="sc">|&gt;</span> </span>
@@ -576,7 +582,7 @@ ME(x_{ij}) &amp;= \frac{\partial}{\partial x_{i, j}}\log E[W_i]
 </ul>
 </div>
 <div id="exm-Heckit-example4" class="example theorem">
-<p><span class="theorem-title"><strong>Example 1.3 (ブートストラップ法を使った限界効果の標準誤差の推定)</strong></span> ここでは <a href="#exm-Heckit-example3" class="quarto-xref">例題&nbsp;<span>1.2</span></a> で推定したタイプIIトービットモデルの限界効果について、ブートストラップ法を使った標準誤差の推定と検定を試みたいと思います。まず、 <a href="#exm-Heckit-example1" class="quarto-xref">例題&nbsp;<span>1.1</span></a> で実装したモデル推定し、<a href="#exm-Heckit-example3" class="quarto-xref">例題&nbsp;<span>1.2</span></a> で実装した <code>heckitmfx()</code> 関数で限界効果を推定するまでの操作を、ひとまとめにしたラッパー関数を定義します。</p>
+<p><span class="theorem-title"><strong>Example 2.3 (ブートストラップ法を使った限界効果の標準誤差の推定)</strong></span> ここでは <a href="#exm-Heckit-example3" class="quarto-xref">例題&nbsp;<span>2.2</span></a> で推定したタイプIIトービットモデルの限界効果について、ブートストラップ法を使った標準誤差の推定と検定を試みたいと思います。まず、 <a href="#exm-Heckit-example1" class="quarto-xref">例題&nbsp;<span>2.1</span></a> で実装したモデル推定し、<a href="#exm-Heckit-example3" class="quarto-xref">例題&nbsp;<span>2.2</span></a> で実装した <code>heckitmfx()</code> 関数で限界効果を推定するまでの操作を、ひとまとめにしたラッパー関数を定義します。</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>est_heckit_mfx <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> sampleSelection<span class="sc">::</span><span class="fu">heckit</span>(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">selection =</span> lfp <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> nwifeinc <span class="sc">+</span> age <span class="sc">+</span> kids5 <span class="sc">+</span> kids618, <span class="co"># 就業決定関数</span></span>
@@ -615,7 +621,7 @@ ME(x_{ij}) &amp;= \frac{\partial}{\partial x_{i, j}}\log E[W_i]
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="01-typeII-tobit_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="931"></p>
+<p><img src="02-typeII-tobit_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="931"></p>
 </figure>
 </div>
 </div>
@@ -641,11 +647,11 @@ ME(x_{ij}) &amp;= \frac{\partial}{\partial x_{i, j}}\log E[W_i]
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>　最後に推定結果を比較しやすいように、<code>texreg::screenreg()</code> を模したフォーマットに変換してみましょう。推定結果を比較すると、年齢 <code>Age</code> や <code>Crossbuying</code> などように一貫して限界効果が統計的に有意な変数がある一方で、性別 <code>Sex</code> については総効果 <code>dydx</code> では有意でなくても間接効果は有意であるという結果になっていることが興味深く感じられます（<a href="#tbl-bootstrap-mfx-table1" class="quarto-xref">表&nbsp;<span>1.1</span></a>）。</p>
+<p>　最後に推定結果を比較しやすいように、<code>texreg::screenreg()</code> を模したフォーマットに変換してみましょう。推定結果を比較すると、年齢 <code>Age</code> や <code>Crossbuying</code> などように一貫して限界効果が統計的に有意な変数がある一方で、性別 <code>Sex</code> については総効果 <code>dydx</code> では有意でなくても間接効果は有意であるという結果になっていることが興味深く感じられます（<a href="#tbl-bootstrap-mfx-table1" class="quarto-xref">表&nbsp;<span>2.1</span></a>）。</p>
 <div id="tbl-bootstrap-mfx-table1" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bootstrap-mfx-table1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-表&nbsp;1.1: ブートストラップ法による推定結果
+表&nbsp;2.1: ブートストラップ法による推定結果
 </figcaption>
 <div aria-describedby="tbl-bootstrap-mfx-table1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
@@ -1222,8 +1228,8 @@ Taddy, Matt. (2019). <em>Business data science: Combining machine learning and e
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Readme">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Readme</span>
+      <a href="./01-covid-19-labor-market.html" class="pagination-link" aria-label="研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -1237,4 +1243,4 @@ Taddy, Matt. (2019). <em>Business data science: Combining machine learning and e
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/01-typeII-tobit.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/02-typeII-tobit.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
