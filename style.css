@@ -1,0 +1,62 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+p {
+  font-style : normal;
+}
+
+.note {
+  padding: 5px;
+  margin-bottom: 1px;
+  /*border-top: 2px solid #DFE2E6;*/
+  border-top: 10px solid #EEF4FC;
+  border-left: 5px solid #427EDC;
+  border-bottom: 2px solid #DFE2E6;
+  border-right: 2px solid #DFE2E6;
+  border-radius: 10px;
+  /* background-color: #F7F7F7; */
+  background-color: #FFFFFF;
+}
+
+.note::before {
+  content: "ℹ️ Note";
+  display: block;
+  font-weight: bold;
+  /* font-size: 18px;*/
+  margin-bottom: 1px;
+  color: #53585C;
+}
+
+
+.warning {
+  padding: 5px;
+  margin-bottom: 1px;
+  /*border-top: 2px solid #DFE2E6;*/
+  border-top: 10px solid #FDF3EC;
+  border-left: 5px solid #EE7D37;
+  border-bottom: 2px solid #DFE2E6;
+  border-right: 2px solid #DFE2E6;
+  border-radius: 10px;
+  /* background-color: #F7F7F7; */
+  background-color: #FFFFFF;
+}
+
+.warning::before {
+  content: "⚠️️ Warning";
+  display: block;
+  font-weight: bold;
+  /* font-size: 18px;*/
+  margin-bottom: 1px;
+  color: #53585C;
+}

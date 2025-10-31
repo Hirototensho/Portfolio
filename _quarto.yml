@@ -1,0 +1,43 @@
+project:
+  type: website
+  output-dir: docs   # ← GitHub Pagesと相性◎
+format:
+  html:
+    theme: cosmo
+    css: theme.scss
+    toc: true
+    toc-depth: 3
+    toc-expand: 2 # Header 2以降は折りたたむ
+    callout-appearance: default	# callout については https://quarto.org/docs/authoring/callouts.html を参照
+    grid:
+      sidebar-width: 250px   # サイドバー幅の最大値
+      body-width: 1000px      # メイン本文幅の最大値
+      margin-width: 150px    # 余白幅の最大値
+    crossref: # prefix の種類は https://quarto.org/docs/reference/metadata/crossref.html?utm_source=chatgpt.com 参照
+      fig-title: "図"
+      fig-prefix: "図"
+      tbl-title: "表"
+      tbl-prefix: "表"
+      eq-prefix: "式"
+      eq-title: "式"
+      sec-prefix: "第"
+      exm-prefix: "例題"
+      exr-prefix: "練習問題"
+      prp-prefix: "命題"
+      thm-prefix: "定理"
+      lem-prefix: "補題"
+      cor-prefix: "系"
+      def-prefix: "定義"
+
+number-sections: true
+editor: source
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+csl: american-psychological-association-7th-edition.csl
+knitr:
+  opts_chunk:
+    comment: "#>"
+    collapse: true
+    fig-align: center
+execute:
+  freeze: auto       # 再現性のためのキャッシュ
