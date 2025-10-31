@@ -5,7 +5,8 @@ book:
   title: "Data Science Portfolio"
   chapters:
     - index.qmd
-    - 01-typeII-tobit.qmd
+    - 01-covid-19-labor-market.qmd
+    - 02-typeII-tobit.qmd
     - 90-references.qmd
   repo-url: https://github.com/Hirototensho/Portfolio
   repo-actions: [source]
