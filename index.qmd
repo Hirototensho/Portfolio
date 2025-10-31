@@ -14,5 +14,5 @@ date-format: "YYYY-MM-DD"
 
 ## 目次
 
-- @sec-covid-19-labor-market
+- [@sec-covid-19-labor-market]
 - [@sec-type2-tobit]
