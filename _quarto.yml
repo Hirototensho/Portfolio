@@ -7,6 +7,8 @@ book:
     - index.qmd
     - 01-typeII-tobit.qmd
     - 90-references.qmd
+  repo-url: https://github.com/Hirototensho/Portfolio
+  repo-actions: [source]
 format:
   html:
     theme: cosmo
@@ -15,6 +17,7 @@ format:
     toc-depth: 3
     toc-expand: 2 # Header 2以降は折りたたむ
     callout-appearance: default	# callout については https://quarto.org/docs/authoring/callouts.html を参照
+    
     grid:
       sidebar-width: 250px   # サイドバー幅の最大値
       body-width: 1000px      # メイン本文幅の最大値
