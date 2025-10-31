@@ -1,5 +1,9 @@
 ---
-title: "Portfolio"
+author: "Hiroto Tensho"
+date: today
+date-format: "YYYY-MM-DD"
 ---
+
+# Readme {.unnumbered}
 
 ここに要約版の目次やリンクを置きます。

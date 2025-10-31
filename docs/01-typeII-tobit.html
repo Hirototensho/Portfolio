@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; タイプIIトービットモデル – Data Science Portfolio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./90-references.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d11a96ff3f225c503a42487652aed278.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="theme.scss">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-typeII-tobit.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Data Science Portfolio</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Readme</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-typeII-tobit.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./90-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#要約" id="toc-要約" class="nav-link active" data-scroll-target="#要約"><span class="header-section-number">1.1</span> 要約</a></li>
+  <li><a href="#タイプiiトービットモデルの概要" id="toc-タイプiiトービットモデルの概要" class="nav-link" data-scroll-target="#タイプiiトービットモデルの概要"><span class="header-section-number">1.2</span> タイプIIトービットモデルの概要</a></li>
+  <li><a href="#heckman-の2段階推定" id="toc-heckman-の2段階推定" class="nav-link" data-scroll-target="#heckman-の2段階推定"><span class="header-section-number">1.3</span> Heckman の2段階推定</a></li>
+  <li><a href="#使用上の注意点" id="toc-使用上の注意点" class="nav-link" data-scroll-target="#使用上の注意点"><span class="header-section-number">1.4</span> 使用上の注意点</a></li>
+  <li><a href="#rによる実装" id="toc-rによる実装" class="nav-link" data-scroll-target="#rによる実装"><span class="header-section-number">1.5</span> Rによる実装</a></li>
+  <li><a href="#タイプiiトービットモデルの限界効果" id="toc-タイプiiトービットモデルの限界効果" class="nav-link" data-scroll-target="#タイプiiトービットモデルの限界効果"><span class="header-section-number">1.6</span> タイプIIトービットモデルの限界効果</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-type2-tobit" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="要約" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="要約"><span class="header-section-number">1.1</span> 要約</h2>
+<ul>
+<li>賃金やECサイトでの購買金額のように、特定の回答者（e.g.&nbsp;働いている人, ECサイトの利用者）しか観測できないデータを被説明変数とする場合に使える手法です</li>
+<li>被説明変数を観測できている人だけを対象として分析を行うと、セレクションバイアスが生じます</li>
+<li>タイプIIトービットモデルを用いることで、セレクションバイアスを避けながら分析を行うことができます</li>
+</ul>
+</section>
+<section id="タイプiiトービットモデルの概要" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="タイプiiトービットモデルの概要"><span class="header-section-number">1.2</span> タイプIIトービットモデルの概要</h2>
+<p>　個人 <span class="math inline">\(i\)</span> の賃金を <span class="math inline">\(W_i\)</span> としたとき <span class="math inline">\(\log W_i = \boldsymbol{X}_i^\mathsf{T}\boldsymbol{\beta} + \epsilon_{2i}\)</span> で定まる回帰式を推定する問題を考えます。これは労働経済学ではミンサー型賃金関数と呼ばれ、年齢と所得の関係を調べる賃金プロファイルや、教育年数が所得に与える効果を調べるために用いられます<span class="citation" data-cites="川口2017 大森_永瀬2021">(<a href="90-references.html#ref-大森_永瀬2021" role="doc-biblioref">大森 &amp; 永瀬, 2021</a>; <a href="90-references.html#ref-川口2017" role="doc-biblioref">川口, 2017</a>)</span>。 　実際の推定に当たっては、賃金 <span class="math inline">\(W_i\)</span> が就業者についてしか観測することができないことが問題となります。簡単な解決策として <span class="math inline">\(W_i\)</span> が観測されているデータだけを使って分析すること（完全ケース解析）が考えられますが、就業者と非就業者の属性に系統的な違いがあるなら、推定結果にバイアスが生じる可能性があります。また、非就業者について欠測値をゼロで埋めて <span class="math inline">\(W_i = 0\)</span> とすること（定数による代入）も適切ではありません。なぜなら、現在働いていない人でも働けば一定額の賃金が得られるはずだからです<span class="citation" data-cites="末石2015">(<a href="90-references.html#ref-末石2015" role="doc-biblioref">末石, 2015, pp. 111–113</a>)</span>。<br>
+　そこで、<strong>タイプIIトービットモデル</strong>では、賃金が観測されるかどうか（≒ その回答者が働いているかどうか）を予測するモデルと賃金を予測するモデルを組み合わせることで（<a href="#eq-Heckman1" class="quarto-xref">式&nbsp;<span>1.1</span></a>）、バイアスを補正します。<br>
+　タイプIIトービットモデルの推定方法としては、<strong>Heckman の2段階推定</strong>と最尤法が知られていますが、どちらも<code>sampleSelection</code> パッケージの <code>heckit()</code> 関数として実装されています。</p>
+</section>
+<section id="heckman-の2段階推定" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="heckman-の2段階推定"><span class="header-section-number">1.3</span> Heckman の2段階推定</h2>
+<p>　ここではタイプIIトービットモデルの推定法のうち、より簡単な Heckman の2段階推定について説明します。Heckman の2段階推定は、(1) 賃金 <span class="math inline">\(W_i\)</span> が観測されるかどうかを予測するプロビットモデル（就業決定関数）、(2) 賃金を予測する線形モデル（賃金関数）を、次のような手順で組み合わせます。<br>
+　まず、賃金が観測されていれば1、観測されていなければ0となるダミー変数 <span class="math inline">\(D_i\)</span> を被説明変数として使い、 <span class="math inline">\(\boldsymbol{Z}_i\)</span> を説明変数とする、次のプロビットモデルを推定します。</p>
+<p><span id="eq-Heckman1"><span class="math display">\[
+\large
+\begin{equation}
+\begin{aligned}
+\Phi(D_i) &amp;= \boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma} + \epsilon_{1i}
+\end{aligned}
+\end{equation}
+\tag{1.1}\]</span></span></p>
+<p>次に、推定されたプロビットモデルから <span class="math inline">\(\lambda(\boldsymbol{Z}_i^\mathsf{T} \boldsymbol{\gamma}) = \phi(\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma}) / \Phi(\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma})\)</span> として定義される<strong>逆ミルズ比</strong>を推定します。最後に、逆ミルズ比を説明変数に加えた次のモデルを最小二乗法で推定することで、セレクションバイアスが補正された回帰係数 <span class="math inline">\(\boldsymbol{\beta}\)</span> の推定値を得ることができます。</p>
+<p><span id="eq-Heckman2"><span class="math display">\[
+\large
+\begin{equation}
+\begin{aligned}
+\log W_i &amp;= \boldsymbol{X}_i^\mathsf{T}\boldsymbol{\beta}
++ \sigma_{12}\lambda(\boldsymbol{Z}_i^\mathsf{T} \boldsymbol{\gamma})
++ \epsilon_{2i}
+\end{aligned}
+\end{equation}
+\tag{1.2}\]</span></span></p>
+</section>
+<section id="使用上の注意点" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="使用上の注意点"><span class="header-section-number">1.4</span> 使用上の注意点</h2>
+<p>タイプIIトービットモデルの使用にあたり、次の2点に注意が必要です。</p>
+<ol type="1">
+<li>プロビットモデルの説明変数 <span class="math inline">\(\boldsymbol{Z}_i\)</span> には、線形モデルの説明変数 <span class="math inline">\(\boldsymbol{X}_i\)</span> に含まれていない変数を、少なくとも追加する必要がある</li>
+</ol>
+<p>具体的には、線形モデルの説明変数 <span class="math inline">\(\boldsymbol{X}_i\)</span> には教育年数と勤続年数を使い、プロビットモデルの説明変数 <span class="math inline">\(\boldsymbol{Z}_i\)</span> には教育年数と勤続年数に加えて子どもの人数を使う、といった配慮が必要です。</p>
+<ol start="2" type="1">
+<li>説明変数 <span class="math inline">\(\boldsymbol{Z}_i, \boldsymbol{X}_i\)</span> の欠測値には、タイプIIトービットモデルだけでは対応できない</li>
+</ol>
+</section>
+<section id="rによる実装" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="rによる実装"><span class="header-section-number">1.5</span> Rによる実装</h2>
+<div id="exm-Heckit-example1" class="example theorem">
+<p><span class="theorem-title"><strong>Example 1.1 (Heckman の2段階推定法)</strong></span> ここでは <code>sampleSelection</code> パッケージの <code>Mroz87</code>データを例にHeckman の2段階推定法を実装します。まずはサンプルデータを読み込みます。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Mroz87"</span>, <span class="at">package =</span> <span class="st">"sampleSelection"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">mutate</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="ot">&lt;-</span> Mroz87 <span class="sc">|&gt;</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  naniar<span class="sc">::</span><span class="fu">replace_with_na</span>(<span class="at">replace =</span> <span class="fu">list</span>(<span class="at">wage =</span> <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lwage =</span> <span class="fu">log</span>(wage))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 753</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 労働参加 lfp = 0 の回答者は全て lwage が観測されています。</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">miss_lwage =</span> <span class="fu">is.na</span>(lwage)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">tabyl</span>(lfp, miss_lwage)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  inlf FALSE TRUE</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     0     0  325</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     1   428    0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>次に <a href="https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf"><code>sampleSelection::heckit()</code></a> 関数でタイプIIトービットモデルを推定します。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fit_heckit <span class="ot">&lt;-</span> sampleSelection<span class="sc">::</span><span class="fu">heckit</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">selection =</span> lfp <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> nwifeinc <span class="sc">+</span> age <span class="sc">+</span> kids5 <span class="sc">+</span> kids618, <span class="co"># 就業決定関数</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span>  lwage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>),                                   <span class="co"># 賃金関数</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Mroz87,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"2step"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_heckit)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Tobit 2 model (sample selection model)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2-step Heckman / heckit estimation</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 753 observations (325 censored and 428 observed)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 free parameters (df = 739)</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Probit selection equation:</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)  0.270077   0.508593   0.531  0.59556    </span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; educ         0.130905   0.025254   5.183 2.81e-07 ***</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; exper        0.123348   0.018716   6.590 8.34e-11 ***</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; I(exper^2)  -0.001887   0.000600  -3.145  0.00173 ** </span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; nwifeinc    -0.012024   0.004840  -2.484  0.01320 *  </span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; age         -0.052853   0.008477  -6.235 7.61e-10 ***</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; kids5       -0.868328   0.118522  -7.326 6.21e-13 ***</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; kids618      0.036005   0.043477   0.828  0.40786    </span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Outcome equation:</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -0.5781032  0.3050062  -1.895  0.05843 .  </span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; educ         0.1090655  0.0155230   7.026 4.83e-12 ***</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; exper        0.0438873  0.0162611   2.699  0.00712 ** </span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; I(exper^2)  -0.0008591  0.0004389  -1.957  0.05068 .  </span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-Squared:0.1569,   Adjusted R-Squared:0.149</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Error terms:</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; invMillsRatio  0.03226    0.13362   0.241    0.809</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sigma          0.66363         NA      NA       NA</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; rho            0.04861         NA      NA       NA</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>　この結果は春山<span class="citation" data-cites="春山2023">(<a href="90-references.html#ref-春山2023" role="doc-biblioref">2023</a>)</span>が公開している <code>Heckit()</code> 関数を適用した結果と一致していました。ちなみに、<code>sampleSelection::heckit(method = "2step")</code> の結果に <code>broom::tidy()</code> を使うときは <code>broom::tidy(fit_heckit$lm)</code> で賃金関数の推定値を、<code>broom::tidy(fit_heckit$probit)</code> で就業決定関数の推定値を表示できるほか、<code>texreg::screenreg()</code> 関数にも対応しています。</p>
+</div>
+</section>
+<section id="タイプiiトービットモデルの限界効果" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="タイプiiトービットモデルの限界効果"><span class="header-section-number">1.6</span> タイプIIトービットモデルの限界効果</h2>
+<p>　計量経済学の実証論文では、ロジスティック回帰やプロビットモデルの推定結果を<strong>限界効果</strong>（marginal effect）に変換してから掲載することがよく行われます。限界効果とは、ある説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> が僅かに変化したときに、被説明変数や予測確率がどの程度増減するかを表すもので、回帰式を説明変数 <span class="math inline">\(\boldsymbol{x}_{ij}\)</span> で偏微分したものとして定義されます。<br>
+　タイプIIトービットモデルについても、次式によって限界効果を計算できることが知られています<span class="citation" data-cites="ダハナ_勝又2023 Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">Hoffmann &amp; Kassouf, 2005</a>; <a href="90-references.html#ref-ダハナ_勝又2023" role="doc-biblioref">ダハナ &amp; 勝又, 2023, pp. 139–140</a>)</span>。</p>
+<p><span id="eq-Heckit-mfx3"><span class="math display">\[
+\large
+\begin{equation}
+\begin{aligned}
+ME(x_{ij}) &amp;= \frac{\partial}{\partial x_{i, j}}\log E[W_i]
+= \underbrace{
+\beta_j - \gamma_j \sigma_{12} \delta_i}_{e_I}
++ \underbrace{
+\gamma_j \lambda(\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma})
+}_{e_{II}}\\
+\delta_i &amp;= \lambda(\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma})
+[\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma}
++ \lambda(\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma})]
+\end{aligned}
+\end{equation}
+\tag{1.3}\]</span></span></p>
+<p><a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>1.3</span></a> の限界効果には、条件付き限界効果 <span class="math inline">\(e_I\)</span>、間接効果 <span class="math inline">\(e_{II}\)</span>、条件なしの限界効果 <span class="math inline">\(ME(x_{ij})\)</span> の3通りに分解できるという特徴があり、それぞれの項には次のような意味があります<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">Hoffmann &amp; Kassouf, 2005</a>)</span>。</p>
+<ul>
+<li><span class="math inline">\(e_I\)</span> <strong>条件付き限界効果</strong>（conditional marginal effect）： 説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> の変化が就業者の賃金に与える効果を表す</li>
+<li><span class="math inline">\(e_{II}\)</span> <strong>間接効果</strong>：説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> の変化が、就業率の変化を通じて間接的に賃金を変化させる効果</li>
+<li><span class="math inline">\(ME(x_{ij})\)</span> <strong>条件なしの限界効果</strong>（unconditional marginal effect）：説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> の変化が就業者と非就業者の全体の賃金に与える効果を表す</li>
+</ul>
+<p>　例えば Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005, p. 12</a>)</span>は、実証分析に <a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>1.3</span></a> の分解を利用することで、ブラジルの女性の教育年数が1年伸びることが、勤労女性の収入を11.6%上昇させると同時に、女性の労働市場参加率を5.2%増加させることで、女性全体の所得を17.4％増加させる効果を持つと報告しています。　　 　このように、教育年数が収入に与える効果をより豊かな洞察をもたらす形で提示できることは、タイプIIトービットモデルを用いる利点の1つだと言えるでしょう。</p>
+<div id="exm-Heckit-example3" class="example theorem">
+<p><span class="theorem-title"><strong>Example 1.2 (タイプIIトービットモデルの限界効果)</strong></span> ここではタイプIIトービットモデルの限界効果をRで実装します。ダハナ, 勝又<span class="citation" data-cites="ダハナ_勝又2023">(<a href="90-references.html#ref-ダハナ_勝又2023" role="doc-biblioref">2023, pp. 139–140</a>)</span>と Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005</a>)</span>、そして <a href="https://github.com/santosglauber/heckitmfx/tree/main/R"><code>heckitmfx</code></a>パッケージの <a href="https://github.com/santosglauber/heckitmfx/blob/main/R/heckitmfx_log.R"><code>heckitmfx::heckitmfx_log()</code></a> 関数の実装を参考に、<a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>1.3</span></a> の限界効果をRの関数として実装します。</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>heckitmfx.R</strong></pre>
+</div>
+<div class="sourceCode" id="cb3" data-filename="heckitmfx.R"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># メインの関数から呼び出されて、限界効果を推定する関数 ------------------------------------------------------------</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>heckitmfx_compute <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    gamma, beta, betalambda, Z, ...</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># type = c("unconditional", "conditional", "selection")</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>){</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 就業決定関数の予測値と逆ミルズ比の計算 ---------------------------------</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> Z <span class="sc">%*%</span> gamma</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(alpha) <span class="sc">/</span> <span class="fu">pnorm</span>(alpha)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  delta <span class="ot">&lt;-</span> lambda <span class="sc">*</span> (lambda <span class="sc">+</span> alpha)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 限界効果の各項の計算 ---------------------</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  selection <span class="ot">&lt;-</span> gamma[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> <span class="fu">mean</span>(lambda)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  ei_2 <span class="ot">&lt;-</span> gamma[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> betalambda <span class="sc">*</span> <span class="fu">mean</span>(delta)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ダミー変数用の処理 --------------</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  dummy_vars <span class="ot">&lt;-</span> <span class="fu">apply</span>(Z[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">FUN =</span> is_dummy, <span class="at">MARGIN =</span> <span class="dv">2</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">sum</span>(dummy_vars) <span class="sc">&gt;=</span> <span class="dv">1</span>){</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    terms_for_dummy_vars <span class="ot">&lt;-</span> <span class="fu">names</span>(dummy_vars[dummy_vars]) <span class="sc">|&gt;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">terms_for_dummy</span>(Z, gamma, betalambda)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ダミー変数についての推定値に置換</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    ei_2[dummy_vars] <span class="ot">&lt;-</span> terms_for_dummy_vars[<span class="dv">1</span>, ]</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    selection[dummy_vars] <span class="ot">&lt;-</span> terms_for_dummy_vars[<span class="dv">2</span>, ]</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 回帰係数と限界効果の各項をデータフレームにまとめます。</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  est <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">beta =</span> beta[<span class="sc">-</span><span class="dv">1</span>]), </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">gamma =</span> gamma[<span class="sc">-</span><span class="dv">1</span>]), </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"row.names"</span>, <span class="at">all =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">term =</span> <span class="st">"Row.names"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">full_join</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(ei_2, <span class="at">term =</span> <span class="fu">names</span>(ei_2)), <span class="at">by =</span> <span class="fu">join_by</span>(term)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">full_join</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(selection, <span class="at">term =</span> <span class="fu">names</span>(selection)), <span class="at">by =</span> <span class="fu">join_by</span>(term))</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  est[<span class="fu">is.na</span>(est)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 限界効果の推定</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> est <span class="sc">|&gt;</span> </span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">term =</span> <span class="fu">as.character</span>(term),</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">conditional =</span> beta <span class="sc">-</span> ei_2,</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">unconditional =</span> conditional <span class="sc">+</span> selection</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(term, unconditional, conditional, selection, beta, gamma)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 結果の出力 ---------------------------------</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>次に、Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005</a>)</span>に基づいて説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> がダミー変数である場合の処理を実装します。</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>heckitmfx.R</strong></pre>
+</div>
+<div class="sourceCode" id="cb4" data-filename="heckitmfx.R"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ダミー変数を判定する関数</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>is_dummy <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">unique_value =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">na.rm =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(na.rm) x <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(x)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> checkmate<span class="sc">::</span><span class="fu">test_set_equal</span>(<span class="at">x =</span> x, <span class="at">y =</span> unique_value)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ダミー変数に関する間接効果の計算</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>terms_for_dummy <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(<span class="cf">function</span>(var_name, Z, gamma, betalambda){</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  fun_inv_mills <span class="ot">&lt;-</span> \(x) <span class="fu">dnorm</span>(x) <span class="sc">/</span> <span class="fu">pnorm</span>(x)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  z_1 <span class="ot">&lt;-</span> z_0 <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(Z)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  z_1[var_name] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  z_0[var_name] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  delta_lambda <span class="ot">&lt;-</span> betalambda <span class="sc">*</span> <span class="fu">as.vector</span>(<span class="fu">fun_inv_mills</span>(z_1 <span class="sc">%*%</span> gamma) <span class="sc">-</span> <span class="fu">fun_inv_mills</span>(z_0 <span class="sc">%*%</span> gamma))</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  delta_log_phi <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">pnorm</span>(z_1 <span class="sc">%*%</span> gamma, <span class="at">log.p =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">pnorm</span>(z_0 <span class="sc">%*%</span> gamma, <span class="at">log.p =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">rbind</span>(delta_lambda, delta_log_phi) </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>}, <span class="at">vectorize.args =</span> <span class="st">"var_name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>最後に、限界効果を推定するメインの関数を実装します。</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>heckitmfx.R</strong></pre>
+</div>
+<div class="sourceCode" id="cb5" data-filename="heckitmfx.R"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># モデルオブジェクトから限界効果を推定するメインの関数 ------------------------------------------------------------</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>heckitmfx <span class="ot">&lt;-</span> <span class="cf">function</span>(model, <span class="at">newdata =</span> <span class="cn">NULL</span>, <span class="at">.params =</span> <span class="cn">NULL</span>, ...){</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 回帰係数の抽出 ---------------------------------</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(.params)){</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    coef_all <span class="ot">&lt;-</span> <span class="fu">coef</span>(model) <span class="co"># 全ての回帰係数を取得  </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># デルタ法の実装に使うための、回帰係数を任意の値で上書きする機能</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    coef_all <span class="ot">&lt;-</span> .params <span class="co"># 引数 .params が指定されていた場合は .params で上書きする</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 全ての説明変数の名前を抽出</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  all_vars <span class="ot">&lt;-</span> <span class="fu">names</span>(coef_all) <span class="sc">|&gt;</span> <span class="fu">unique</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(<span class="sc">!</span>(. <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"(Intercept)"</span>, <span class="st">"invMillsRatio"</span>, <span class="st">"sigma"</span>, <span class="st">"rho"</span>)))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 賃金関数の回帰係数が始まる位置を特定する</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  start_beta <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">names</span>(coef_all) <span class="sc">==</span> <span class="st">"(Intercept)"</span>)[<span class="dv">2</span>]</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  gamma <span class="ot">&lt;-</span> coef_all[<span class="dv">1</span><span class="sc">:</span>(start_beta <span class="sc">-</span> <span class="dv">1</span>)] <span class="co"># 就業決定関数の回帰係数</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 賃金関数の回帰係数</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> coef_all[start_beta<span class="sc">:</span><span class="fu">length</span>(coef_all)] <span class="sc">%&gt;%</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(<span class="sc">!</span>(<span class="fu">names</span>(.) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"invMillsRatio"</span>, <span class="st">"sigma"</span>, <span class="st">"rho"</span>)))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  betalambda <span class="ot">&lt;-</span> coef_all <span class="sc">%&gt;%</span> <span class="fu">subset</span>((<span class="fu">names</span>(.) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"sigma"</span>, <span class="st">"rho"</span>))) <span class="sc">|&gt;</span> <span class="fu">prod</span>()</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 就業決定関数の計画行列の抽出 ---------------------------------</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(model<span class="sc">$</span>method <span class="sc">==</span> <span class="st">"2step"</span>){</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    Z <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(model<span class="sc">$</span>probit, <span class="at">data =</span> newdata)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(Z) <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(<span class="fu">colnames</span>(Z), <span class="st">"XS"</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(model<span class="sc">$</span>method <span class="sc">==</span> <span class="st">"ml"</span>){</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>      Z <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(model<span class="sc">$</span>termsS, <span class="at">data =</span> newdata)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 限界効果の推定</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">heckitmfx_compute</span>(</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">gamma =</span> gamma,</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta =</span> beta,</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">betalambda =</span> betalambda,</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">Z =</span> Z</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>　<a href="#exm-Heckit-example1" class="quarto-xref">例題&nbsp;<span>1.1</span></a> で推定したモデル（fit_heckit）に対して <code>heckitmfx()</code> を実行すると、次のような結果が得られます。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| paged-print: false</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2段階推定に基づく結果</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">heckitmfx</span>(fit_heckit) <span class="sc">|&gt;</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="at">.fns =</span> \(x) <span class="fu">round</span>(x, <span class="dv">5</span>)))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         term unconditional conditional selection     beta    gamma</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        age      -0.03854     0.00095  -0.03950  0.00000 -0.05285</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       educ       0.20453     0.10670   0.09782  0.10907  0.13090</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3      exper       0.13384     0.04166   0.09217  0.04389  0.12335</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 I(exper^2)      -0.00224    -0.00083  -0.00141 -0.00086 -0.00189</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5      kids5      -0.63321     0.01566  -0.64887  0.00000 -0.86833</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    kids618       0.02626    -0.00065   0.02691  0.00000  0.03600</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7   nwifeinc      -0.00877     0.00022  -0.00898  0.00000 -0.01202</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>なお、<code>heckitmfx()</code> 関数の出力の各列は次の値に対応しています。</p>
+<ul>
+<li><code>unconditional</code>： 条件なしの平均限界効果 <span class="math inline">\(\overline{ME}(\boldsymbol{x}_j)\)</span>。</li>
+<li><code>conditional</code>： 条件付き平均限界効果 <span class="math inline">\(\overline{ME}(\boldsymbol{x}_j | Y_{1i}^* \ge 0)\)</span>。</li>
+<li><code>selection</code>： 間接効果の平均値 <span class="math inline">\(e_{II} = \gamma_j \lambda(\boldsymbol{Z}_i^\mathsf{T}\boldsymbol{\gamma})\)</span></li>
+<li><code>beta</code>：賃金関数の回帰係数の推定値 <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span></li>
+<li><code>gamma</code>：就業決定関数の回帰係数の推定値 <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span></li>
+</ul>
+</div>
+<div id="exm-Heckit-example4" class="example theorem">
+<p><span class="theorem-title"><strong>Example 1.3 (ブートストラップ法を使った限界効果の標準誤差の推定)</strong></span> ここでは <a href="#exm-Heckit-example3" class="quarto-xref">例題&nbsp;<span>1.2</span></a> で推定したタイプIIトービットモデルの限界効果について、ブートストラップ法を使った標準誤差の推定と検定を試みたいと思います。まず、 <a href="#exm-Heckit-example1" class="quarto-xref">例題&nbsp;<span>1.1</span></a> で実装したモデル推定し、<span class="quarto-unresolved-ref">?exm-Heckit-example2</span> で実装した <code>heckitmfx()</code> 関数で限界効果を推定するまでの操作を、ひとまとめにしたラッパー関数を定義します。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>est_heckit_mfx <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> sampleSelection<span class="sc">::</span><span class="fu">heckit</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">selection =</span> lfp <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> nwifeinc <span class="sc">+</span> age <span class="sc">+</span> kids5 <span class="sc">+</span> kids618, <span class="co"># 就業決定関数</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome =</span>  lwage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>),                                      <span class="co"># 賃金関数</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> data,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"2step"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">heckitmfx</span>(mod, <span class="at">newdata =</span> data)  </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>次に、<code>slice_sample()</code> 関数で復元抽出を行い、反復回数を1,000回でブートストラップ法を実行します。</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>tictoc<span class="sc">::</span><span class="fu">tic</span>() <span class="co"># 参考までに実行時間を計測しておきます。</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>heckitmfx_with_boot <span class="ot">&lt;-</span> <span class="fu">map</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f =</span> \(x) <span class="fu">est_heckit_mfx</span>(Mroz87 <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="dv">1</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">"Iteration"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 26.45 sec elapsed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>ここでは <a href="https://mjskay.github.io/ggdist/reference/stat_pointinterval.html"><code>ggdist::stat_pointinterval()</code></a> 関数を使ってブートストラップ統計量の分布を可視化してみましょう。</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>heckitmfx_with_boot <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Iteration<span class="sc">:</span>selection) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(unconditional<span class="sc">:</span>selection, <span class="at">names_to =</span> <span class="st">"type"</span>, <span class="at">values_to =</span> <span class="st">"estimate"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate, <span class="at">y =</span> term)) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray60"</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  ggdist<span class="sc">::</span><span class="fu">stat_pointinterval</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> my_color, <span class="at">alpha =</span> <span class="fl">0.7</span>, </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">point_interval =</span> <span class="st">"mean_qi"</span>, <span class="co"># `summarise_boot` と一致するように点推定を平均値とします。</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.width =</span> <span class="fu">c</span>(<span class="fl">0.95</span>, <span class="fl">0.99</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="01-typeII-tobit_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="931"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>次に、<code>heckitmfx()</code> で得られる3種類の限界効果について、ブートストラップ統計量を集計して、それぞれ標準誤差分位点法による<span class="math inline">\(p\)</span>-値を計算します。なお、ブートストラップ法やブートストラップ法での信頼区間と<span class="math inline">\(p\)</span>-値の計算方法については末石<span class="citation" data-cites="末石2015">(<a href="90-references.html#ref-末石2015" role="doc-biblioref">2015, p. 140</a>)</span>、Efron &amp; Hastie<span class="citation" data-cites="CASI2016">(<a href="90-references.html#ref-CASI2016" role="doc-biblioref">2016</a>)</span>、Taddy<span class="citation" data-cites="taddy2019">(<a href="90-references.html#ref-taddy2019" role="doc-biblioref">2019</a>)</span>および Bodory et al.<span class="citation" data-cites="Bodory_et_al2020">(<a href="90-references.html#ref-Bodory_et_al2020" role="doc-biblioref">Bodory et al., 2020, p. 16</a>)</span>を参照してください。</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>summarise_boot <span class="ot">&lt;-</span> <span class="cf">function</span>(res_boot, var){</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  res_boot <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> var,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">mean</span>(.data[[var]]),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">std.error =</span> <span class="fu">sd</span>(.data[[var]]),                                        <span class="co"># 標準誤差</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p.value =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pmin</span>(<span class="fu">mean</span>(.data[[var]] <span class="sc">&lt;=</span> <span class="dv">0</span>), <span class="fu">mean</span>(.data[[var]] <span class="sc">&gt;</span> <span class="dv">0</span>)), <span class="co"># 分位点法によるp-値</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.lower =</span> <span class="fu">quantile</span>(.data[[var]], <span class="fl">0.025</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.upper =</span> <span class="fu">quantile</span>(.data[[var]], <span class="fl">0.975</span>),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.by =</span> term</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>summary_boot <span class="ot">&lt;-</span> <span class="fu">map</span>(</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> <span class="fu">c</span>(<span class="st">"unconditional"</span>, <span class="st">"conditional"</span>, <span class="st">"selection"</span>), </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f =</span> \(x) <span class="fu">summarise_boot</span>(heckitmfx_with_boot, x)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>　最後に推定結果を比較しやすいように、<code>texreg::screenreg()</code> を模したフォーマットに変換してみましょう。推定結果を比較すると、年齢 <code>Age</code> や <code>Crossbuying</code> などように一貫して限界効果が統計的に有意な変数がある一方で、性別 <code>Sex</code> については総効果 <code>dydx</code> では有意でなくても間接効果は有意であるという結果になっていることが興味深く感じられます（<a href="#tbl-bootstrap-mfx-table1" class="quarto-xref">表&nbsp;<span>1.1</span></a>）。</p>
+<div id="tbl-bootstrap-mfx-table1" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bootstrap-mfx-table1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;1.1: ブートストラップ法による推定結果
+</figcaption>
+<div aria-describedby="tbl-bootstrap-mfx-table1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
+<thead>
+<tr>
+<th style="text-align:left;">
+term
+</th>
+<th style="text-align:left;">
+unconditional
+</th>
+<th style="text-align:left;">
+conditional
+</th>
+<th style="text-align:left;">
+selection
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:left;">
+-0.0392***<br>(0.0086)
+</td>
+<td style="text-align:left;">
+0.0010 <br>(0.0046)
+</td>
+<td style="text-align:left;">
+-0.0402***<br>(0.0069)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+educ
+</td>
+<td style="text-align:left;">
+0.2059***<br>(0.0251)
+</td>
+<td style="text-align:left;">
+0.1060***<br>(0.0141)
+</td>
+<td style="text-align:left;">
+0.0999***<br>(0.0203)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+exper
+</td>
+<td style="text-align:left;">
+0.1350***<br>(0.0214)
+</td>
+<td style="text-align:left;">
+0.0417**<br>(0.0152)
+</td>
+<td style="text-align:left;">
+0.0933***<br>(0.0159)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+I(exper^2)
+</td>
+<td style="text-align:left;">
+-0.0022***<br>(0.0006)
+</td>
+<td style="text-align:left;">
+-0.0008*<br>(0.0004)
+</td>
+<td style="text-align:left;">
+-0.0014**<br>(0.0005)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+kids5
+</td>
+<td style="text-align:left;">
+-0.6424***<br>(0.1248)
+</td>
+<td style="text-align:left;">
+0.0168 <br>(0.0756)
+</td>
+<td style="text-align:left;">
+-0.6592***<br>(0.0996)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+kids618
+</td>
+<td style="text-align:left;">
+0.0276 <br>(0.0344)
+</td>
+<td style="text-align:left;">
+-0.0008 <br>(0.0050)
+</td>
+<td style="text-align:left;">
+0.0284 <br>(0.0350)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+nwifeinc
+</td>
+<td style="text-align:left;">
+-0.0091*<br>(0.0040)
+</td>
+<td style="text-align:left;">
+0.0003 <br>(0.0012)
+</td>
+<td style="text-align:left;">
+-0.0094*<br>(0.0040)
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<span style="font-style: italic;">Note: </span>
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> 括弧内はブートストラップ法による標準誤差
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> Signif. codes: 0 ’***’ 0.001 ’**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</figure>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-Bodory_et_al2020" class="csl-entry" role="listitem">
+Bodory, Hugo, Lorenzo Camponovo, Martin Huber, and Michael Lechner. (2020). The finite sample performance of inference methods for propensity score matching and weighting estimators. <em>Journal of Business &amp; Economic Statistics</em>, <em>38</em>(1), 183–200.
+</div>
+<div id="ref-CASI2016" class="csl-entry" role="listitem">
+Efron, Bradley, and Trevor Hastie. (2016). <em>Computer age statistical inference</em>. Cambridge University Press. <a href="https://web.stanford.edu/~hastie/CASI/">https://web.stanford.edu/~hastie/CASI/</a> Institute of mathematical statistics monographs
+</div>
+<div id="ref-Hoffmann_Kassouf2005" class="csl-entry" role="listitem">
+Hoffmann, Rodolfo, and Ana Lucia Kassouf. (2005). Deriving conditional and unconditional marginal effects in log earnings equations estimated by heckman’s procedure. <em>Applied Economics</em>, <em>37</em>(11), 1303–1311.
+</div>
+<div id="ref-taddy2019" class="csl-entry" role="listitem">
+Taddy, Matt. (2019). <em>Business data science: Combining machine learning and economics to optimize, automate, and accelerate business decisions</em>. McGraw-Hill Education. <a href="https://www.oreilly.com/library/view/business-data-science/9781260452785/">https://www.oreilly.com/library/view/business-data-science/9781260452785/</a> 上杉隼人, 井上毅郎〔訳〕(2020)『ビジネスデータサイエンスの教科書』すばる舎
+</div>
+<div id="ref-ダハナ_勝又2023" class="csl-entry" role="listitem">
+ダハナ・ウィラワン ドニ, and 勝又壮太郎. (2023). <em>『Rによるマーケティング・データ分析: 基礎から応用まで (ライブラリ データ分析への招待 4)』</em>. 新世社.
+</div>
+<div id="ref-大森_永瀬2021" class="csl-entry" role="listitem">
+大森義明, and 永瀬伸子. (2021). <em>『労働経済学をつかむ』</em>. 有斐閣.
+</div>
+<div id="ref-川口2017" class="csl-entry" role="listitem">
+川口大司. (2017). <em>『労働経済学 – 理論と実証をつなぐ』</em>. 有斐閣.
+</div>
+<div id="ref-春山2023" class="csl-entry" role="listitem">
+春山鉄源. (2023). <em>Pythonで学ぶ入門計量経済学</em>. <a href="https://py4etrics.github.io/index.html">https://py4etrics.github.io/index.html</a>
+</div>
+<div id="ref-末石2015" class="csl-entry" role="listitem">
+末石直也. (2015). <em>『計量経済学：ミクロデータ分析へのいざない』</em>. 日本評論社.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Readme">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Readme</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./90-references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

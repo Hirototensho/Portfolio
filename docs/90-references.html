@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Hiroto Tensho">
-<meta name="dcterms.date" content="2025-10-31">
 
-<title>Data Science Portfolio</title>
+<title>References – Data Science Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -32,7 +49,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01-typeII-tobit.html" rel="next">
+<link href="./01-typeII-tobit.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -84,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Readme</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./90-references.html">References</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -111,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Readme</span></a>
   </div>
 </li>
@@ -123,7 +140,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./90-references.html" class="sidebar-item-text sidebar-link">
+  <a href="./90-references.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -132,40 +149,22 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#readme" id="toc-readme" class="nav-link active" data-scroll-target="#readme">Readme</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Science Portfolio</h1>
+<h1 class="title">References</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Hiroto Tensho </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">2025-10-31</p>
-    </div>
-  </div>
   
     
   </div>
@@ -175,12 +174,52 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="readme" class="level1 unnumbered">
-<h1 class="unnumbered">Readme</h1>
-<p>ここに要約版の目次やリンクを置きます。</p>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Bodory_et_al2020" class="csl-entry" role="listitem">
+Bodory, Hugo, Lorenzo Camponovo, Martin Huber, and Michael Lechner.
+(2020). The finite sample performance of inference methods for
+propensity score matching and weighting estimators. <em>Journal of
+Business &amp; Economic Statistics</em>, <em>38</em>(1), 183–200.
+</div>
+<div id="ref-CASI2016" class="csl-entry" role="listitem">
+Efron, Bradley, and Trevor Hastie. (2016). <em>Computer age statistical
+inference</em>. Cambridge University Press. <a href="https://web.stanford.edu/~hastie/CASI/">https://web.stanford.edu/~hastie/CASI/</a>
+Institute of mathematical statistics monographs
+</div>
+<div id="ref-Hoffmann_Kassouf2005" class="csl-entry" role="listitem">
+Hoffmann, Rodolfo, and Ana Lucia Kassouf. (2005). Deriving conditional
+and unconditional marginal effects in log earnings equations estimated
+by heckman’s procedure. <em>Applied Economics</em>, <em>37</em>(11),
+1303–1311.
+</div>
+<div id="ref-taddy2019" class="csl-entry" role="listitem">
+Taddy, Matt. (2019). <em>Business data science: Combining machine
+learning and economics to optimize, automate, and accelerate business
+decisions</em>. McGraw-Hill Education. <a href="https://www.oreilly.com/library/view/business-data-science/9781260452785/">https://www.oreilly.com/library/view/business-data-science/9781260452785/</a>
+上杉隼人,
+井上毅郎〔訳〕(2020)『ビジネスデータサイエンスの教科書』すばる舎
+</div>
+<div id="ref-ダハナ_勝又2023" class="csl-entry" role="listitem">
+ダハナ・ウィラワン ドニ, and 勝又壮太郎. (2023).
+<em>『Rによるマーケティング・データ分析: 基礎から応用まで (ライブラリ
+データ分析への招待 4)』</em>. 新世社.
+</div>
+<div id="ref-大森_永瀬2021" class="csl-entry" role="listitem">
+大森義明, and 永瀬伸子. (2021). <em>『労働経済学をつかむ』</em>. 有斐閣.
+</div>
+<div id="ref-川口2017" class="csl-entry" role="listitem">
+川口大司. (2017). <em>『労働経済学 – 理論と実証をつなぐ』</em>. 有斐閣.
+</div>
+<div id="ref-春山2023" class="csl-entry" role="listitem">
+春山鉄源. (2023). <em>Pythonで学ぶ入門計量経済学</em>. <a href="https://py4etrics.github.io/index.html">https://py4etrics.github.io/index.html</a>
+</div>
+<div id="ref-末石2015" class="csl-entry" role="listitem">
+末石直也. (2015). <em>『計量経済学：ミクロデータ分析へのいざない』</em>.
+日本評論社.
+</div>
+</div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -584,11 +623,11 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./01-typeII-tobit.html" class="pagination-link" aria-label="タイプIIトービットモデル">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01-typeII-tobit.html" class="pagination-link" aria-label="タイプIIトービットモデル">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

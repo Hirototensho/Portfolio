@@ -1,6 +1,12 @@
 project:
-  type: website
+  type: book
   output-dir: docs   # ← GitHub Pagesと相性◎
+book:
+  title: "Data Science Portfolio"
+  chapters:
+    - index.qmd
+    - 01-typeII-tobit.qmd
+    - 90-references.qmd
 format:
   html:
     theme: cosmo
