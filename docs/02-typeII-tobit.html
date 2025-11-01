@@ -343,60 +343,61 @@ window.Quarto = {
 <section id="rによる実装" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="rによる実装"><span class="header-section-number">2.5</span> Rによる実装</h2>
 <div id="exm-Heckit-example1" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.1 (Heckman の2段階推定法)</strong></span> ここでは <code>sampleSelection</code> パッケージの <code>Mroz87</code>データを例にHeckman の2段階推定法を実装します。まずはサンプルデータを読み込みます。</p>
+<p><span class="theorem-title"><strong>Example 2.1 (Heckman の2段階推定法)</strong></span> ここでは <code>sampleSelection</code> パッケージの <code>Mroz87</code>データを例に、次に <a href="https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf"><code>sampleSelection::heckit()</code></a> 関数を使って Heckman の2段階推定法を実装します。<code>Mroz87</code> データは1975年に実施された Panel Study of Income Dynamics をもとにしたデータです。753名の既婚女性のデータが記録されており、内428名が就業者、残る325名が非就業者です。<code>Mroz87</code> には就業状態 <code>lfp や賃金</code>wage<code>、教育年数</code>educ<code>や労働市場経験年数</code>exper<code>、配偶者の賃金</code>huswage` が収録されており、今回はこれに Heckman の2段階推定を組み合わせて賃金関数を推定します。<br>
+　まずはサンプルデータを読み込みます。</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Mroz87"</span>, <span class="at">package =</span> <span class="st">"sampleSelection"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">mutate</span>()</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="ot">&lt;-</span> Mroz87 <span class="sc">|&gt;</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  naniar<span class="sc">::</span><span class="fu">replace_with_na</span>(<span class="at">replace =</span> <span class="fu">list</span>(<span class="at">wage =</span> <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lwage =</span> <span class="fu">log</span>(wage))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 753</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 労働参加 lfp = 0 の回答者は全て lwage が観測されています。</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">miss_lwage =</span> <span class="fu">is.na</span>(lwage)) <span class="sc">|&gt;</span> </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">tabyl</span>(lfp, miss_lwage)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  inlf FALSE TRUE</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     0     0  325</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     1   428    0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>次に <a href="https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf"><code>sampleSelection::heckit()</code></a> 関数でタイプIIトービットモデルを推定します。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fit_heckit <span class="ot">&lt;-</span> sampleSelection<span class="sc">::</span><span class="fu">heckit</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">selection =</span> lfp <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> nwifeinc <span class="sc">+</span> age <span class="sc">+</span> kids5 <span class="sc">+</span> kids618, <span class="co"># 就業決定関数</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span>  lwage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>),                                   <span class="co"># 賃金関数</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Mroz87,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"2step"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_heckit)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Tobit 2 model (sample selection model)</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2-step Heckman / heckit estimation</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 753 observations (325 censored and 428 observed)</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 free parameters (df = 739)</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Probit selection equation:</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)  0.270077   0.508593   0.531  0.59556    </span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; educ         0.130905   0.025254   5.183 2.81e-07 ***</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; exper        0.123348   0.018716   6.590 8.34e-11 ***</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; I(exper^2)  -0.001887   0.000600  -3.145  0.00173 ** </span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; nwifeinc    -0.012024   0.004840  -2.484  0.01320 *  </span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; age         -0.052853   0.008477  -6.235 7.61e-10 ***</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; kids5       -0.868328   0.118522  -7.326 6.21e-13 ***</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; kids618      0.036005   0.043477   0.828  0.40786    </span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Outcome equation:</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -0.5781032  0.3050062  -1.895  0.05843 .  </span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; educ         0.1090655  0.0155230   7.026 4.83e-12 ***</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; exper        0.0438873  0.0162611   2.699  0.00712 ** </span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; I(exper^2)  -0.0008591  0.0004389  -1.957  0.05068 .  </span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-Squared:0.1569,   Adjusted R-Squared:0.149</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Error terms:</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; invMillsRatio  0.03226    0.13362   0.241    0.809</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sigma          0.66363         NA      NA       NA</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; rho            0.04861         NA      NA       NA</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>　この結果は、春山<span class="citation" data-cites="春山2023">(<a href="90-references.html#ref-春山2023" role="doc-biblioref">2023</a>)</span>がコードを公開している <code>Heckit()</code> 関数を適用した結果と一致していました。ちなみに、<code>sampleSelection::heckit(method = "2step")</code> の結果に <code>broom::tidy()</code> を使うときは <code>broom::tidy(fit_heckit$lm)</code> で賃金関数の推定値を、<code>broom::tidy(fit_heckit$probit)</code> で就業決定関数の推定値を表示できるほか、<code>texreg::screenreg()</code> 関数にも対応しています。</p>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">dim</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 753  22</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>Mroz87</code> データでは非就業者の賃金は全て0（<code>wage = 0</code>）として記録されているのですが、ここでは処理を明確にするために非就業者の賃金は欠測値 <code>NA</code> に置き換え、さらに対数賃金を計算しておきます。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="ot">&lt;-</span> Mroz87 <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  naniar<span class="sc">::</span><span class="fu">replace_with_na</span>(<span class="at">replace =</span> <span class="fu">list</span>(<span class="at">wage =</span> <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lwage =</span> <span class="fu">log</span>(wage)) </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 労働参加 lfp = 0 の回答者は全て lwage が観測されています。</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">miss_lwage =</span> <span class="fu">is.na</span>(lwage)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">tabyl</span>(lfp, miss_lwage)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  inlf FALSE TRUE</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     0     0  325</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     1   428    0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>次に <a href="https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf"><code>sampleSelection::heckit()</code></a> 関数でタイプIIトービットモデルを推定します。<code>heckit()</code> 関数を使うときは、<code>selection</code> 引数に就業決定関数の回帰式を指定し、<code>outcome</code> 引数に賃金関数の回帰式を指定します。今回は、典型的なミンサー型賃金関数で使われる教育年数 <code>educ</code> と経験年数 <code>exper</code> およびその2乗項に加えて配偶者の賃金 <code>huswage</code> を説明変数として使い、就業決定関数ではさらに年齢 <code>age</code> と子どもの人数（<code>kids5</code> および <code>kids618</code>）を説明変数として使用します。また、ここでは Heckman の2段階推定を使うので <code>method = "2step"</code> を指定します。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fit_heckit <span class="ot">&lt;-</span> sampleSelection<span class="sc">::</span><span class="fu">heckit</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">selection =</span> lfp <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> huswage <span class="sc">+</span> age <span class="sc">+</span> kids5 <span class="sc">+</span> kids618, <span class="co"># 就業決定関数</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> lwage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> huswage,                         <span class="co"># 賃金関数</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Mroz87,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"2step"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_heckit)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Tobit 2 model (sample selection model)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2-step Heckman / heckit estimation</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 753 observations (325 censored and 428 observed)</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16 free parameters (df = 738)</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Probit selection equation:</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)  0.3606478  0.5057097   0.713   0.4760    </span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; educ         0.1248354  0.0248294   5.028 6.24e-07 ***</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; exper        0.1260740  0.0186842   6.748 3.04e-11 ***</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; I(exper^2)  -0.0019245  0.0006001  -3.207   0.0014 ** </span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; huswage     -0.0255439  0.0126406  -2.021   0.0437 *  </span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; age         -0.0547300  0.0084083  -6.509 1.40e-10 ***</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; kids5       -0.8650260  0.1180205  -7.329 6.08e-13 ***</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; kids618      0.0285095  0.0434365   0.656   0.5118    </span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Outcome equation:</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) -0.4472713  0.3122183  -1.433   0.1524    </span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; educ         0.0955365  0.0168361   5.675    2e-08 ***</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; exper        0.0370433  0.0166119   2.230   0.0261 *  </span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; I(exper^2)  -0.0006878  0.0004465  -1.540   0.1239    </span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; huswage      0.0192415  0.0098639   1.951   0.0515 .  </span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-Squared:0.1643,   Adjusted R-Squared:0.1544</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Error terms:</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; invMillsRatio -0.06114    0.14170  -0.431    0.666</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sigma          0.66171         NA      NA       NA</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; rho           -0.09240         NA      NA       NA</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>　推定結果は <code>Probit selection equation</code> が就業決定関数の結果を、<code>Outcome equation</code> が賃金関数の結果を表しています。今回の推定結果を見ると、妻の教育年数 <code>educ</code> と経験年数 <code>exper</code> が伸びるほど就業率と賃金が高くなり、配偶者の賃金 <code>huswage</code> が高くなるほど妻の就業率は低下するものの、賃金には影響を与えないことが読み取れます<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。<br>
+　ちなみに、<code>sampleSelection::heckit(method = "2step")</code> の結果に <code>broom::tidy()</code> を使うときは <code>broom::tidy(fit_heckit$lm)</code> で賃金関数の推定値を、<code>broom::tidy(fit_heckit$probit)</code> で就業決定関数の推定値を表示できるほか、<code>texreg::screenreg()</code> 関数にも対応しています。</p>
 </div>
 </section>
 <section id="タイプiiトービットモデルの限界効果" class="level2" data-number="2.6">
@@ -428,150 +429,154 @@ ME(x_{ij}) &amp;= \frac{\partial}{\partial x_{i, j}}\log E[W_i]
 <p>　例えば Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005, p. 12</a>)</span>は、実証分析に <a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>2.3</span></a> の分解を利用することで、ブラジルの女性の教育年数が1年伸びることが、勤労女性の収入を11.6%上昇させると同時に、女性の労働市場参加率を5.2%増加させることで、女性全体の所得を17.4％増加させる効果を持つと報告しています。　　 　このように、教育年数が収入に与える効果をより豊かな洞察をもたらす形で提示できることは、タイプIIトービットモデルを用いる利点の1つだと言えるでしょう。</p>
 <div id="exm-Heckit-example3" class="example theorem">
 <p><span class="theorem-title"><strong>Example 2.2 (タイプIIトービットモデルの限界効果)</strong></span> ここではタイプIIトービットモデルの限界効果をRで実装します。ダハナ, 勝又<span class="citation" data-cites="ダハナ_勝又2023">(<a href="90-references.html#ref-ダハナ_勝又2023" role="doc-biblioref">2023, pp. 139–140</a>)</span>と Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005</a>)</span>、そして <a href="https://github.com/santosglauber/heckitmfx/tree/main/R"><code>heckitmfx</code></a>パッケージの <a href="https://github.com/santosglauber/heckitmfx/blob/main/R/heckitmfx_log.R"><code>heckitmfx::heckitmfx_log()</code></a> 関数の実装を参考に、<a href="#eq-Heckit-mfx3" class="quarto-xref">式&nbsp;<span>2.3</span></a> の限界効果をRの関数として実装します。</p>
+<div class="cell" data-layout-align="center">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>heckitmfx.R</strong></pre>
 </div>
-<div class="sourceCode" id="cb3" data-filename="heckitmfx.R"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># メインの関数から呼び出されて、限界効果を推定する関数 ------------------------------------------------------------</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>heckitmfx_compute <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    gamma, beta, betalambda, Z, ...</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># type = c("unconditional", "conditional", "selection")</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>){</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 就業決定関数の予測値と逆ミルズ比の計算 ---------------------------------</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> Z <span class="sc">%*%</span> gamma</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(alpha) <span class="sc">/</span> <span class="fu">pnorm</span>(alpha)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  delta <span class="ot">&lt;-</span> lambda <span class="sc">*</span> (lambda <span class="sc">+</span> alpha)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 限界効果の各項の計算 ---------------------</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  selection <span class="ot">&lt;-</span> gamma[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> <span class="fu">mean</span>(lambda)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  ei_2 <span class="ot">&lt;-</span> gamma[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> betalambda <span class="sc">*</span> <span class="fu">mean</span>(delta)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ダミー変数用の処理 --------------</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  dummy_vars <span class="ot">&lt;-</span> <span class="fu">apply</span>(Z[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">FUN =</span> is_dummy, <span class="at">MARGIN =</span> <span class="dv">2</span>)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">sum</span>(dummy_vars) <span class="sc">&gt;=</span> <span class="dv">1</span>){</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    terms_for_dummy_vars <span class="ot">&lt;-</span> <span class="fu">names</span>(dummy_vars[dummy_vars]) <span class="sc">|&gt;</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">terms_for_dummy</span>(Z, gamma, betalambda)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ダミー変数についての推定値に置換</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    ei_2[dummy_vars] <span class="ot">&lt;-</span> terms_for_dummy_vars[<span class="dv">1</span>, ]</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    selection[dummy_vars] <span class="ot">&lt;-</span> terms_for_dummy_vars[<span class="dv">2</span>, ]</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 回帰係数と限界効果の各項をデータフレームにまとめます。</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  est <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">beta =</span> beta[<span class="sc">-</span><span class="dv">1</span>]), </span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">gamma =</span> gamma[<span class="sc">-</span><span class="dv">1</span>]), </span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"row.names"</span>, <span class="at">all =</span> <span class="cn">TRUE</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">term =</span> <span class="st">"Row.names"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">full_join</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(ei_2, <span class="at">term =</span> <span class="fu">names</span>(ei_2)), <span class="at">by =</span> <span class="fu">join_by</span>(term)) <span class="sc">|&gt;</span> </span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">full_join</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(selection, <span class="at">term =</span> <span class="fu">names</span>(selection)), <span class="at">by =</span> <span class="fu">join_by</span>(term))</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  est[<span class="fu">is.na</span>(est)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 限界効果の推定</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> est <span class="sc">|&gt;</span> </span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">term =</span> <span class="fu">as.character</span>(term),</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">conditional =</span> beta <span class="sc">-</span> ei_2,</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">unconditional =</span> conditional <span class="sc">+</span> selection</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(term, unconditional, conditional, selection, beta, gamma)</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 結果の出力 ---------------------------------</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># メインの関数から呼び出されて、限界効果を推定する関数 ------------------------------------------------------------</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>heckitmfx_compute <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    gamma, beta, betalambda, Z, ...</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># type = c("unconditional", "conditional", "selection")</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>){</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 就業決定関数の予測値と逆ミルズ比の計算 ---------------------------------</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> Z <span class="sc">%*%</span> gamma</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(alpha) <span class="sc">/</span> <span class="fu">pnorm</span>(alpha)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  delta <span class="ot">&lt;-</span> lambda <span class="sc">*</span> (lambda <span class="sc">+</span> alpha)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 限界効果の各項の計算 ---------------------</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  selection <span class="ot">&lt;-</span> gamma[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> <span class="fu">mean</span>(lambda)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  ei_2 <span class="ot">&lt;-</span> gamma[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> betalambda <span class="sc">*</span> <span class="fu">mean</span>(delta)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ダミー変数用の処理 --------------</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  dummy_vars <span class="ot">&lt;-</span> <span class="fu">apply</span>(Z[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">FUN =</span> is_dummy, <span class="at">MARGIN =</span> <span class="dv">2</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">sum</span>(dummy_vars) <span class="sc">&gt;=</span> <span class="dv">1</span>){</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    terms_for_dummy_vars <span class="ot">&lt;-</span> <span class="fu">names</span>(dummy_vars[dummy_vars]) <span class="sc">|&gt;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">terms_for_dummy</span>(Z, gamma, betalambda)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ダミー変数についての推定値に置換</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    ei_2[dummy_vars] <span class="ot">&lt;-</span> terms_for_dummy_vars[<span class="dv">1</span>, ]</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    selection[dummy_vars] <span class="ot">&lt;-</span> terms_for_dummy_vars[<span class="dv">2</span>, ]</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 回帰係数と限界効果の各項をデータフレームにまとめます。</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  est <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">beta =</span> beta[<span class="sc">-</span><span class="dv">1</span>]), </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">gamma =</span> gamma[<span class="sc">-</span><span class="dv">1</span>]), </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"row.names"</span>, <span class="at">all =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">term =</span> <span class="st">"Row.names"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">full_join</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(ei_2, <span class="at">term =</span> <span class="fu">names</span>(ei_2)), <span class="at">by =</span> <span class="fu">join_by</span>(term)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">full_join</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(selection, <span class="at">term =</span> <span class="fu">names</span>(selection)), <span class="at">by =</span> <span class="fu">join_by</span>(term))</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  est[<span class="fu">is.na</span>(est)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 限界効果の推定</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> est <span class="sc">|&gt;</span> </span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">term =</span> <span class="fu">as.character</span>(term),</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">conditional =</span> beta <span class="sc">-</span> ei_2,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">unconditional =</span> conditional <span class="sc">+</span> selection</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(term, unconditional, conditional, selection, beta, gamma)</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 結果の出力 ---------------------------------</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 <p>次に、Hoffmann, Kassouf<span class="citation" data-cites="Hoffmann_Kassouf2005">(<a href="90-references.html#ref-Hoffmann_Kassouf2005" role="doc-biblioref">2005</a>)</span>に基づいて説明変数 <span class="math inline">\(\boldsymbol{x}_j\)</span> がダミー変数である場合の処理を実装します。</p>
+<div class="cell" data-layout-align="center">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>heckitmfx.R</strong></pre>
 </div>
-<div class="sourceCode" id="cb4" data-filename="heckitmfx.R"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ダミー変数を判定する関数</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>is_dummy <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">unique_value =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">na.rm =</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(na.rm) x <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(x)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> checkmate<span class="sc">::</span><span class="fu">test_set_equal</span>(<span class="at">x =</span> x, <span class="at">y =</span> unique_value)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ダミー変数に関する間接効果の計算</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>terms_for_dummy <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(<span class="cf">function</span>(var_name, Z, gamma, betalambda){</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  fun_inv_mills <span class="ot">&lt;-</span> \(x) <span class="fu">dnorm</span>(x) <span class="sc">/</span> <span class="fu">pnorm</span>(x)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  z_1 <span class="ot">&lt;-</span> z_0 <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(Z)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  z_1[var_name] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  z_0[var_name] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  delta_lambda <span class="ot">&lt;-</span> betalambda <span class="sc">*</span> <span class="fu">as.vector</span>(<span class="fu">fun_inv_mills</span>(z_1 <span class="sc">%*%</span> gamma) <span class="sc">-</span> <span class="fu">fun_inv_mills</span>(z_0 <span class="sc">%*%</span> gamma))</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  delta_log_phi <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">pnorm</span>(z_1 <span class="sc">%*%</span> gamma, <span class="at">log.p =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">pnorm</span>(z_0 <span class="sc">%*%</span> gamma, <span class="at">log.p =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">rbind</span>(delta_lambda, delta_log_phi) </span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>}, <span class="at">vectorize.args =</span> <span class="st">"var_name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ダミー変数を判定する関数</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>is_dummy <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">unique_value =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">na.rm =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(na.rm) x <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(x)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> checkmate<span class="sc">::</span><span class="fu">test_set_equal</span>(<span class="at">x =</span> x, <span class="at">y =</span> unique_value)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ダミー変数に関する間接効果の計算</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>terms_for_dummy <span class="ot">&lt;-</span> <span class="fu">Vectorize</span>(<span class="cf">function</span>(var_name, Z, gamma, betalambda){</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  fun_inv_mills <span class="ot">&lt;-</span> \(x) <span class="fu">dnorm</span>(x) <span class="sc">/</span> <span class="fu">pnorm</span>(x)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  z_1 <span class="ot">&lt;-</span> z_0 <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(Z)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  z_1[var_name] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  z_0[var_name] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  delta_lambda <span class="ot">&lt;-</span> betalambda <span class="sc">*</span> <span class="fu">as.vector</span>(<span class="fu">fun_inv_mills</span>(z_1 <span class="sc">%*%</span> gamma) <span class="sc">-</span> <span class="fu">fun_inv_mills</span>(z_0 <span class="sc">%*%</span> gamma))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  delta_log_phi <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">pnorm</span>(z_1 <span class="sc">%*%</span> gamma, <span class="at">log.p =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">pnorm</span>(z_0 <span class="sc">%*%</span> gamma, <span class="at">log.p =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">rbind</span>(delta_lambda, delta_log_phi) </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>}, <span class="at">vectorize.args =</span> <span class="st">"var_name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>最後に、限界効果を推定するメインの関数を実装します。</p>
+</div>
+<p>最後に、限界効果を推定するメインの関数である <code>heckitmfx()</code> 関数を実装します。</p>
+<div class="cell" data-layout-align="center">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>heckitmfx.R</strong></pre>
 </div>
-<div class="sourceCode" id="cb5" data-filename="heckitmfx.R"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># モデルオブジェクトから限界効果を推定するメインの関数 ------------------------------------------------------------</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>heckitmfx <span class="ot">&lt;-</span> <span class="cf">function</span>(model, <span class="at">newdata =</span> <span class="cn">NULL</span>, <span class="at">.params =</span> <span class="cn">NULL</span>, ...){</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 回帰係数の抽出 ---------------------------------</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(.params)){</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    coef_all <span class="ot">&lt;-</span> <span class="fu">coef</span>(model) <span class="co"># 全ての回帰係数を取得  </span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># デルタ法の実装に使うための、回帰係数を任意の値で上書きする機能</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    coef_all <span class="ot">&lt;-</span> .params <span class="co"># 引数 .params が指定されていた場合は .params で上書きする</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 全ての説明変数の名前を抽出</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  all_vars <span class="ot">&lt;-</span> <span class="fu">names</span>(coef_all) <span class="sc">|&gt;</span> <span class="fu">unique</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(<span class="sc">!</span>(. <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"(Intercept)"</span>, <span class="st">"invMillsRatio"</span>, <span class="st">"sigma"</span>, <span class="st">"rho"</span>)))</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 賃金関数の回帰係数が始まる位置を特定する</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  start_beta <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">names</span>(coef_all) <span class="sc">==</span> <span class="st">"(Intercept)"</span>)[<span class="dv">2</span>]</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  gamma <span class="ot">&lt;-</span> coef_all[<span class="dv">1</span><span class="sc">:</span>(start_beta <span class="sc">-</span> <span class="dv">1</span>)] <span class="co"># 就業決定関数の回帰係数</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 賃金関数の回帰係数</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> coef_all[start_beta<span class="sc">:</span><span class="fu">length</span>(coef_all)] <span class="sc">%&gt;%</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(<span class="sc">!</span>(<span class="fu">names</span>(.) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"invMillsRatio"</span>, <span class="st">"sigma"</span>, <span class="st">"rho"</span>)))</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  betalambda <span class="ot">&lt;-</span> coef_all <span class="sc">%&gt;%</span> <span class="fu">subset</span>((<span class="fu">names</span>(.) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"sigma"</span>, <span class="st">"rho"</span>))) <span class="sc">|&gt;</span> <span class="fu">prod</span>()</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 就業決定関数の計画行列の抽出 ---------------------------------</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(model<span class="sc">$</span>method <span class="sc">==</span> <span class="st">"2step"</span>){</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    Z <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(model<span class="sc">$</span>probit, <span class="at">data =</span> newdata)</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(Z) <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(<span class="fu">colnames</span>(Z), <span class="st">"XS"</span>)</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(model<span class="sc">$</span>method <span class="sc">==</span> <span class="st">"ml"</span>){</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>      Z <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(model<span class="sc">$</span>termsS, <span class="at">data =</span> newdata)</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 限界効果の推定</span></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">heckitmfx_compute</span>(</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">gamma =</span> gamma,</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta =</span> beta,</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">betalambda =</span> betalambda,</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">Z =</span> Z</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># モデルオブジェクトから限界効果を推定するメインの関数 ------------------------------------------------------------</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>heckitmfx <span class="ot">&lt;-</span> <span class="cf">function</span>(model, <span class="at">newdata =</span> <span class="cn">NULL</span>, <span class="at">.params =</span> <span class="cn">NULL</span>, ...){</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 回帰係数の抽出 ---------------------------------</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(.params)){</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    coef_all <span class="ot">&lt;-</span> <span class="fu">coef</span>(model) <span class="co"># 全ての回帰係数を取得  </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># デルタ法の実装に使うための、回帰係数を任意の値で上書きする機能</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    coef_all <span class="ot">&lt;-</span> .params <span class="co"># 引数 .params が指定されていた場合は .params で上書きする</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 全ての説明変数の名前を抽出</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  all_vars <span class="ot">&lt;-</span> <span class="fu">names</span>(coef_all) <span class="sc">|&gt;</span> <span class="fu">unique</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(<span class="sc">!</span>(. <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"(Intercept)"</span>, <span class="st">"invMillsRatio"</span>, <span class="st">"sigma"</span>, <span class="st">"rho"</span>)))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 賃金関数の回帰係数が始まる位置を特定する</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  start_beta <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">names</span>(coef_all) <span class="sc">==</span> <span class="st">"(Intercept)"</span>)[<span class="dv">2</span>]</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  gamma <span class="ot">&lt;-</span> coef_all[<span class="dv">1</span><span class="sc">:</span>(start_beta <span class="sc">-</span> <span class="dv">1</span>)] <span class="co"># 就業決定関数の回帰係数</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 賃金関数の回帰係数</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> coef_all[start_beta<span class="sc">:</span><span class="fu">length</span>(coef_all)] <span class="sc">%&gt;%</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(<span class="sc">!</span>(<span class="fu">names</span>(.) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"invMillsRatio"</span>, <span class="st">"sigma"</span>, <span class="st">"rho"</span>)))</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  betalambda <span class="ot">&lt;-</span> coef_all <span class="sc">%&gt;%</span> <span class="fu">subset</span>((<span class="fu">names</span>(.) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"sigma"</span>, <span class="st">"rho"</span>))) <span class="sc">|&gt;</span> <span class="fu">prod</span>()</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 就業決定関数の計画行列の抽出 ---------------------------------</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(model<span class="sc">$</span>method <span class="sc">==</span> <span class="st">"2step"</span>){</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    Z <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(model<span class="sc">$</span>probit, <span class="at">data =</span> newdata)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(Z) <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(<span class="fu">colnames</span>(Z), <span class="st">"XS"</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(model<span class="sc">$</span>method <span class="sc">==</span> <span class="st">"ml"</span>){</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>      Z <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(model<span class="sc">$</span>termsS, <span class="at">data =</span> newdata)</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 限界効果の推定</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">heckitmfx_compute</span>(</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">gamma =</span> gamma,</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta =</span> beta,</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">betalambda =</span> betalambda,</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">Z =</span> Z</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 <p>　<a href="#exm-Heckit-example1" class="quarto-xref">例題&nbsp;<span>2.1</span></a> で推定したモデル（fit_heckit）に対して <code>heckitmfx()</code> を実行すると、次のような結果が得られます。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| paged-print: false</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2段階推定に基づく結果</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">heckitmfx</span>(fit_heckit) <span class="sc">|&gt;</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="at">.fns =</span> \(x) <span class="fu">round</span>(x, <span class="dv">5</span>)))</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         term unconditional conditional selection     beta    gamma</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        age      -0.03854     0.00095  -0.03950  0.00000 -0.05285</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       educ       0.20453     0.10670   0.09782  0.10907  0.13090</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3      exper       0.13384     0.04166   0.09217  0.04389  0.12335</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 I(exper^2)      -0.00224    -0.00083  -0.00141 -0.00086 -0.00189</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5      kids5      -0.63321     0.01566  -0.64887  0.00000 -0.86833</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    kids618       0.02626    -0.00065   0.02691  0.00000  0.03600</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7   nwifeinc      -0.00877     0.00022  -0.00898  0.00000 -0.01202</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heckitmfx</span>(fit_heckit) <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="at">.fns =</span> \(x) <span class="fu">round</span>(x, <span class="dv">5</span>)))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         term unconditional conditional selection     beta    gamma</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        age      -0.04270    -0.00187  -0.04083  0.00000 -0.05473</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       educ       0.19293     0.09981   0.09313  0.09554  0.12484</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3      exper       0.13541     0.04136   0.09405  0.03704  0.12607</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4    huswage      -0.00069     0.01837  -0.01906  0.01924 -0.02554</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 I(exper^2)      -0.00219    -0.00075  -0.00144 -0.00069 -0.00192</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6      kids5      -0.67489    -0.02959  -0.64531  0.00000 -0.86503</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7    kids618       0.02224     0.00098   0.02127  0.00000  0.02851</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>なお、<code>heckitmfx()</code> 関数の出力の各列は次の値に対応しています。</p>
 <ul>
 <li><code>unconditional</code>： 条件なしの平均限界効果 <span class="math inline">\(\overline{ME}(\boldsymbol{x}_j)\)</span>。</li>
@@ -583,69 +588,71 @@ ME(x_{ij}) &amp;= \frac{\partial}{\partial x_{i, j}}\log E[W_i]
 </div>
 <div id="exm-Heckit-example4" class="example theorem">
 <p><span class="theorem-title"><strong>Example 2.3 (ブートストラップ法を使った限界効果の標準誤差の推定)</strong></span> ここでは <a href="#exm-Heckit-example3" class="quarto-xref">例題&nbsp;<span>2.2</span></a> で推定したタイプIIトービットモデルの限界効果について、ブートストラップ法を使った標準誤差の推定と検定を試みたいと思います。まず、 <a href="#exm-Heckit-example1" class="quarto-xref">例題&nbsp;<span>2.1</span></a> で実装したモデル推定し、<a href="#exm-Heckit-example3" class="quarto-xref">例題&nbsp;<span>2.2</span></a> で実装した <code>heckitmfx()</code> 関数で限界効果を推定するまでの操作を、ひとまとめにしたラッパー関数を定義します。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>est_heckit_mfx <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> sampleSelection<span class="sc">::</span><span class="fu">heckit</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">selection =</span> lfp <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> nwifeinc <span class="sc">+</span> age <span class="sc">+</span> kids5 <span class="sc">+</span> kids618, <span class="co"># 就業決定関数</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome =</span>  lwage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>),                                      <span class="co"># 賃金関数</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> data,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"2step"</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">heckitmfx</span>(mod, <span class="at">newdata =</span> data)  </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>est_heckit_mfx <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> sampleSelection<span class="sc">::</span><span class="fu">heckit</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">selection =</span> lfp <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> huswage <span class="sc">+</span> age <span class="sc">+</span> kids5 <span class="sc">+</span> kids618, <span class="co"># 就業決定関数</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome =</span> lwage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> huswage,                         <span class="co"># 賃金関数</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> data,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"2step"</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">heckitmfx</span>(mod, <span class="at">newdata =</span> data)  </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>次に、<code>slice_sample()</code> 関数で復元抽出を行い、反復回数を1,000回でブートストラップ法を実行します。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>tictoc<span class="sc">::</span><span class="fu">tic</span>() <span class="co"># 参考までに実行時間を計測しておきます。</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>heckitmfx_with_boot <span class="ot">&lt;-</span> <span class="fu">map</span>(</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f =</span> \(x) <span class="fu">est_heckit_mfx</span>(Mroz87 <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="dv">1</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">"Iteration"</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 26.45 sec elapsed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>tictoc<span class="sc">::</span><span class="fu">tic</span>() <span class="co"># 参考までに実行時間を計測しておきます。</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>heckitmfx_with_boot <span class="ot">&lt;-</span> <span class="fu">map</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f =</span> \(x) <span class="fu">est_heckit_mfx</span>(Mroz87 <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="dv">1</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">"Iteration"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15.565 sec elapsed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>ここでは <a href="https://mjskay.github.io/ggdist/reference/stat_pointinterval.html"><code>ggdist::stat_pointinterval()</code></a> 関数を使ってブートストラップ統計量の分布を可視化してみましょう。</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>heckitmfx_with_boot <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Iteration<span class="sc">:</span>selection) <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(unconditional<span class="sc">:</span>selection, <span class="at">names_to =</span> <span class="st">"type"</span>, <span class="at">values_to =</span> <span class="st">"estimate"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate, <span class="at">y =</span> term)) <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray60"</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  ggdist<span class="sc">::</span><span class="fu">stat_pointinterval</span>(</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> my_color, <span class="at">alpha =</span> <span class="fl">0.7</span>, </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">point_interval =</span> <span class="st">"mean_qi"</span>, <span class="co"># `summarise_boot` と一致するように点推定を平均値とします。</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.width =</span> <span class="fu">c</span>(<span class="fl">0.95</span>, <span class="fl">0.99</span>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span> </span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>heckitmfx_with_boot <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Iteration<span class="sc">:</span>selection) <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(unconditional<span class="sc">:</span>selection, <span class="at">names_to =</span> <span class="st">"type"</span>, <span class="at">values_to =</span> <span class="st">"estimate"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimate, <span class="at">y =</span> term)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray60"</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  ggdist<span class="sc">::</span><span class="fu">stat_pointinterval</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> my_color, <span class="at">alpha =</span> <span class="fl">0.7</span>, </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">point_interval =</span> <span class="st">"mean_qi"</span>, <span class="co"># `summarise_boot` と一致するように点推定を平均値とします。</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.width =</span> <span class="fu">c</span>(<span class="fl">0.95</span>, <span class="fl">0.99</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span> </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-typeII-tobit_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="931"></p>
+<p><img src="02-typeII-tobit_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="931"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>次に、<code>heckitmfx()</code> で得られる3種類の限界効果について、ブートストラップ統計量を集計して、それぞれ標準誤差分位点法による<span class="math inline">\(p\)</span>-値を計算します。なお、ブートストラップ法やブートストラップ法での信頼区間と<span class="math inline">\(p\)</span>-値の計算方法については末石<span class="citation" data-cites="末石2015">(<a href="90-references.html#ref-末石2015" role="doc-biblioref">2015, p. 140</a>)</span>、Efron &amp; Hastie<span class="citation" data-cites="CASI2016">(<a href="90-references.html#ref-CASI2016" role="doc-biblioref">2016</a>)</span>、Taddy<span class="citation" data-cites="taddy2019">(<a href="90-references.html#ref-taddy2019" role="doc-biblioref">2019</a>)</span>および Bodory et al.<span class="citation" data-cites="Bodory_et_al2020">(<a href="90-references.html#ref-Bodory_et_al2020" role="doc-biblioref">Bodory et al., 2020, p. 16</a>)</span>を参照してください。</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>summarise_boot <span class="ot">&lt;-</span> <span class="cf">function</span>(res_boot, var){</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  res_boot <span class="sc">|&gt;</span> </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> var,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">mean</span>(.data[[var]]),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">std.error =</span> <span class="fu">sd</span>(.data[[var]]),                                        <span class="co"># 標準誤差</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p.value =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pmin</span>(<span class="fu">mean</span>(.data[[var]] <span class="sc">&lt;=</span> <span class="dv">0</span>), <span class="fu">mean</span>(.data[[var]] <span class="sc">&gt;</span> <span class="dv">0</span>)), <span class="co"># 分位点法によるp-値</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.lower =</span> <span class="fu">quantile</span>(.data[[var]], <span class="fl">0.025</span>),</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.upper =</span> <span class="fu">quantile</span>(.data[[var]], <span class="fl">0.975</span>),</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.by =</span> term</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>summary_boot <span class="ot">&lt;-</span> <span class="fu">map</span>(</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> <span class="fu">c</span>(<span class="st">"unconditional"</span>, <span class="st">"conditional"</span>, <span class="st">"selection"</span>), </span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f =</span> \(x) <span class="fu">summarise_boot</span>(heckitmfx_with_boot, x)</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>summarise_boot <span class="ot">&lt;-</span> <span class="cf">function</span>(res_boot, var){</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  res_boot <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> var,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">mean</span>(.data[[var]]),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">std.error =</span> <span class="fu">sd</span>(.data[[var]]),                                        <span class="co"># 標準誤差</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p.value =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pmin</span>(<span class="fu">mean</span>(.data[[var]] <span class="sc">&lt;=</span> <span class="dv">0</span>), <span class="fu">mean</span>(.data[[var]] <span class="sc">&gt;</span> <span class="dv">0</span>)), <span class="co"># 分位点法によるp-値</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.lower =</span> <span class="fu">quantile</span>(.data[[var]], <span class="fl">0.025</span>),</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">.upper =</span> <span class="fu">quantile</span>(.data[[var]], <span class="fl">0.975</span>),</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.by =</span> term</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>summary_boot <span class="ot">&lt;-</span> <span class="fu">map</span>(</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> <span class="fu">c</span>(<span class="st">"unconditional"</span>, <span class="st">"conditional"</span>, <span class="st">"selection"</span>), </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f =</span> \(x) <span class="fu">summarise_boot</span>(heckitmfx_with_boot, x)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>　最後に推定結果を比較しやすいように、<code>texreg::screenreg()</code> を模したフォーマットに変換してみましょう。推定結果を比較すると、年齢 <code>Age</code> や <code>Crossbuying</code> などように一貫して限界効果が統計的に有意な変数がある一方で、性別 <code>Sex</code> については総効果 <code>dydx</code> では有意でなくても間接効果は有意であるという結果になっていることが興味深く感じられます（<a href="#tbl-bootstrap-mfx-table1" class="quarto-xref">表&nbsp;<span>2.1</span></a>）。</p>
 <div id="tbl-bootstrap-mfx-table1" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
@@ -677,13 +684,13 @@ selection
 age
 </td>
 <td style="text-align:left;">
--0.0392***<br>(0.0086)
+-0.0433***<br>(0.0091)
 </td>
 <td style="text-align:left;">
-0.0010 <br>(0.0046)
+-0.0017 <br>(0.0055)
 </td>
 <td style="text-align:left;">
--0.0402***<br>(0.0069)
+-0.0416***<br>(0.0068)
 </td>
 </tr>
 <tr>
@@ -691,13 +698,13 @@ age
 educ
 </td>
 <td style="text-align:left;">
-0.2059***<br>(0.0251)
+0.1941***<br>(0.0244)
 </td>
 <td style="text-align:left;">
-0.1060***<br>(0.0141)
+0.0993***<br>(0.0140)
 </td>
 <td style="text-align:left;">
-0.0999***<br>(0.0203)
+0.0948***<br>(0.0196)
 </td>
 </tr>
 <tr>
@@ -705,13 +712,27 @@ educ
 exper
 </td>
 <td style="text-align:left;">
-0.1350***<br>(0.0214)
+0.1364***<br>(0.0214)
 </td>
 <td style="text-align:left;">
-0.0417**<br>(0.0152)
+0.0414**<br>(0.0151)
 </td>
 <td style="text-align:left;">
-0.0933***<br>(0.0159)
+0.0951***<br>(0.0158)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+huswage
+</td>
+<td style="text-align:left;">
+-0.0011 <br>(0.0138)
+</td>
+<td style="text-align:left;">
+0.0182.<br>(0.0103)
+</td>
+<td style="text-align:left;">
+-0.0193.<br>(0.0099)
 </td>
 </tr>
 <tr>
@@ -733,13 +754,13 @@ I(exper^2)
 kids5
 </td>
 <td style="text-align:left;">
--0.6424***<br>(0.1248)
+-0.6802***<br>(0.1307)
 </td>
 <td style="text-align:left;">
-0.0168 <br>(0.0756)
+-0.0259 <br>(0.0863)
 </td>
 <td style="text-align:left;">
--0.6592***<br>(0.0996)
+-0.6543***<br>(0.0985)
 </td>
 </tr>
 <tr>
@@ -747,27 +768,13 @@ kids5
 kids618
 </td>
 <td style="text-align:left;">
-0.0276 <br>(0.0344)
+0.0233 <br>(0.0357)
 </td>
 <td style="text-align:left;">
--0.0008 <br>(0.0050)
+0.0008 <br>(0.0053)
 </td>
 <td style="text-align:left;">
-0.0284 <br>(0.0350)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-nwifeinc
-</td>
-<td style="text-align:left;">
--0.0091*<br>(0.0040)
-</td>
-<td style="text-align:left;">
-0.0003 <br>(0.0012)
-</td>
-<td style="text-align:left;">
--0.0094*<br>(0.0040)
+0.0225 <br>(0.0341)
 </td>
 </tr>
 </tbody>
@@ -824,6 +831,12 @@ Taddy, Matt. (2019). <em>Business data science: Combining machine learning and e
 末石直也. (2015). <em>『計量経済学：ミクロデータ分析へのいざない』</em>. 日本評論社.
 </div>
 </div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>分析結果の解釈方法については、春山<span class="citation" data-cites="春山2023">(<a href="90-references.html#ref-春山2023" role="doc-biblioref">2023</a>)</span>なども参照してください。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->

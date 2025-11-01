@@ -49,3 +49,6 @@ po/*~
 rsconnect/
 
 /.quarto/
+
+# 下書きについてはバージョン管理の対象外とします。
+draft*

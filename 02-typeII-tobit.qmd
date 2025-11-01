@@ -85,18 +85,21 @@ $$ {#eq-Heckman2}
 ## Rによる実装
 
 ::: {.example name="Heckman の2段階推定法" #exm-Heckit-example1}
-ここでは `sampleSelection` パッケージの `Mroz87`データを例にHeckman の2段階推定法を実装します。まずはサンプルデータを読み込みます。
+ここでは `sampleSelection` パッケージの `Mroz87`データを例に、次に [`sampleSelection::heckit()`](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) 関数を使って Heckman の2段階推定法を実装します。`Mroz87` データは1975年に実施された Panel Study of Income Dynamics をもとにしたデータです。753名の既婚女性のデータが記録されており、内428名が就業者、残る325名が非就業者です。`Mroz87` には就業状態 `lfp や賃金 `wage`、教育年数 `educ` や労働市場経験年数 `exper`、配偶者の賃金 `huswage` が収録されており、今回はこれに Heckman の2段階推定を組み合わせて賃金関数を推定します。  
+　まずはサンプルデータを読み込みます。
 
 ``` r
 data("Mroz87", package = "sampleSelection")
-Mroz87 |> mutate()
+Mroz87 |> dim()
+#> [1] 753  22
+```
 
+`Mroz87` データでは非就業者の賃金は全て0（`wage = 0`）として記録されているのですが、ここでは処理を明確にするために非就業者の賃金は欠測値 `NA` に置き換え、さらに対数賃金を計算しておきます。
+
+``` r
 Mroz87 <- Mroz87 |> 
   naniar::replace_with_na(replace = list(wage = 0)) |> 
-  mutate(lwage = log(wage))
-
-Mroz87 |> nrow()
-#> [1] 753
+  mutate(lwage = log(wage)) 
 
 # 労働参加 lfp = 0 の回答者は全て lwage が観測されています。
 Mroz87 |> mutate(miss_lwage = is.na(lwage)) |> 
@@ -106,12 +109,13 @@ Mroz87 |> mutate(miss_lwage = is.na(lwage)) |>
 #>     1   428    0
 ```
 
-次に [`sampleSelection::heckit()`](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) 関数でタイプIIトービットモデルを推定します。
+
+次に [`sampleSelection::heckit()`](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) 関数でタイプIIトービットモデルを推定します。`heckit()` 関数を使うときは、`selection` 引数に就業決定関数の回帰式を指定し、`outcome` 引数に賃金関数の回帰式を指定します。今回は、典型的なミンサー型賃金関数で使われる教育年数 `educ` と経験年数 `exper` およびその2乗項に加えて配偶者の賃金 `huswage` を説明変数として使い、就業決定関数ではさらに年齢 `age` と子どもの人数（`kids5` および `kids618`）を説明変数として使用します。また、ここでは Heckman の2段階推定を使うので `method = "2step"` を指定します。
 
 ``` r
 fit_heckit <- sampleSelection::heckit(
-  selection = lfp ~ educ + exper + I(exper^2) + nwifeinc + age + kids5 + kids618, # 就業決定関数
-  outcome =  lwage ~ educ + exper + I(exper^2),                                   # 賃金関数
+  selection = lfp ~ educ + exper + I(exper^2) + huswage + age + kids5 + kids618, # 就業決定関数
+  outcome = lwage ~ educ + exper + I(exper^2) + huswage,                         # 賃金関数
   data = Mroz87,
   method = "2step"
 )
@@ -120,33 +124,35 @@ summary(fit_heckit)
 #> Tobit 2 model (sample selection model)
 #> 2-step Heckman / heckit estimation
 #> 753 observations (325 censored and 428 observed)
-#> 15 free parameters (df = 739)
+#> 16 free parameters (df = 738)
 #> Probit selection equation:
-#>              Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)  0.270077   0.508593   0.531  0.59556    
-#> educ         0.130905   0.025254   5.183 2.81e-07 ***
-#> exper        0.123348   0.018716   6.590 8.34e-11 ***
-#> I(exper^2)  -0.001887   0.000600  -3.145  0.00173 ** 
-#> nwifeinc    -0.012024   0.004840  -2.484  0.01320 *  
-#> age         -0.052853   0.008477  -6.235 7.61e-10 ***
-#> kids5       -0.868328   0.118522  -7.326 6.21e-13 ***
-#> kids618      0.036005   0.043477   0.828  0.40786    
+#>               Estimate Std. Error t value Pr(>|t|)    
+#> (Intercept)  0.3606478  0.5057097   0.713   0.4760    
+#> educ         0.1248354  0.0248294   5.028 6.24e-07 ***
+#> exper        0.1260740  0.0186842   6.748 3.04e-11 ***
+#> I(exper^2)  -0.0019245  0.0006001  -3.207   0.0014 ** 
+#> huswage     -0.0255439  0.0126406  -2.021   0.0437 *  
+#> age         -0.0547300  0.0084083  -6.509 1.40e-10 ***
+#> kids5       -0.8650260  0.1180205  -7.329 6.08e-13 ***
+#> kids618      0.0285095  0.0434365   0.656   0.5118    
 #> Outcome equation:
 #>               Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept) -0.5781032  0.3050062  -1.895  0.05843 .  
-#> educ         0.1090655  0.0155230   7.026 4.83e-12 ***
-#> exper        0.0438873  0.0162611   2.699  0.00712 ** 
-#> I(exper^2)  -0.0008591  0.0004389  -1.957  0.05068 .  
-#> Multiple R-Squared:0.1569,	Adjusted R-Squared:0.149
+#> (Intercept) -0.4472713  0.3122183  -1.433   0.1524    
+#> educ         0.0955365  0.0168361   5.675    2e-08 ***
+#> exper        0.0370433  0.0166119   2.230   0.0261 *  
+#> I(exper^2)  -0.0006878  0.0004465  -1.540   0.1239    
+#> huswage      0.0192415  0.0098639   1.951   0.0515 .  
+#> Multiple R-Squared:0.1643,	Adjusted R-Squared:0.1544
 #>    Error terms:
 #>               Estimate Std. Error t value Pr(>|t|)
-#> invMillsRatio  0.03226    0.13362   0.241    0.809
-#> sigma          0.66363         NA      NA       NA
-#> rho            0.04861         NA      NA       NA
+#> invMillsRatio -0.06114    0.14170  -0.431    0.666
+#> sigma          0.66171         NA      NA       NA
+#> rho           -0.09240         NA      NA       NA
 #> --------------------------------------------
 ```
 
-　この結果は、春山[-@春山2023]がコードを公開している `Heckit()` 関数を適用した結果と一致していました。ちなみに、`sampleSelection::heckit(method = "2step")` の結果に `broom::tidy()` を使うときは `broom::tidy(fit_heckit$lm)` で賃金関数の推定値を、`broom::tidy(fit_heckit$probit)` で就業決定関数の推定値を表示できるほか、`texreg::screenreg()` 関数にも対応しています。
+　推定結果は `Probit selection equation` が就業決定関数の結果を、`Outcome equation` が賃金関数の結果を表しています。今回の推定結果を見ると、妻の教育年数 `educ` と経験年数 `exper` が伸びるほど就業率と賃金が高くなり、配偶者の賃金 `huswage` が高くなるほど妻の就業率は低下するものの、賃金には影響を与えないことが読み取れます^[分析結果の解釈方法については、春山[-@春山2023]なども参照してください。]。  
+　ちなみに、`sampleSelection::heckit(method = "2step")` の結果に `broom::tidy()` を使うときは `broom::tidy(fit_heckit$lm)` で賃金関数の推定値を、`broom::tidy(fit_heckit$probit)` で就業決定関数の推定値を表示できるほか、`texreg::screenreg()` 関数にも対応しています。
 :::
 
 ## タイプIIトービットモデルの限界効果
@@ -183,7 +189,7 @@ $$ {#eq-Heckit-mfx3}
 ::: {.example name="タイプIIトービットモデルの限界効果" #exm-Heckit-example3}
 ここではタイプIIトービットモデルの限界効果をRで実装します。ダハナ, 勝又[-@ダハナ_勝又2023, p.139-140]と Hoffmann, Kassouf[-@Hoffmann_Kassouf2005]、そして [`heckitmfx`](https://github.com/santosglauber/heckitmfx/tree/main/R)パッケージの [`heckitmfx::heckitmfx_log()`](https://github.com/santosglauber/heckitmfx/blob/main/R/heckitmfx_log.R) 関数の実装を参考に、@eq-Heckit-mfx3 の限界効果をRの関数として実装します。
 
-```{.r filename="heckitmfx.R"}
+```{r filename="heckitmfx.R"}
 # メインの関数から呼び出されて、限界効果を推定する関数 ------------------------------------------------------------
 heckitmfx_compute <- function(
     gamma, beta, betalambda, Z, ...
@@ -238,7 +244,7 @@ heckitmfx_compute <- function(
 
 次に、Hoffmann, Kassouf[-@Hoffmann_Kassouf2005]に基づいて説明変数 $\boldsymbol{x}_j$ がダミー変数である場合の処理を実装します。
 
-```{.r filename="heckitmfx.R"}
+```{r filename="heckitmfx.R"}
 # ダミー変数を判定する関数
 is_dummy <- function(x, unique_value = c(0, 1), na.rm = FALSE) {
   if(na.rm) x <- na.omit(x)
@@ -262,9 +268,9 @@ terms_for_dummy <- Vectorize(function(var_name, Z, gamma, betalambda){
 }, vectorize.args = "var_name")
 ```
 
-最後に、限界効果を推定するメインの関数を実装します。
+最後に、限界効果を推定するメインの関数である `heckitmfx()` 関数を実装します。
 
-```{.r filename="heckitmfx.R"}
+```{r filename="heckitmfx.R"}
 # モデルオブジェクトから限界効果を推定するメインの関数 ------------------------------------------------------------
 heckitmfx <- function(model, newdata = NULL, .params = NULL, ...){
   # 回帰係数の抽出 ---------------------------------
@@ -313,18 +319,16 @@ heckitmfx <- function(model, newdata = NULL, .params = NULL, ...){
 　@exm-Heckit-example1 で推定したモデル（fit_heckit）に対して `heckitmfx()` を実行すると、次のような結果が得られます。
 
 ``` r
-#| paged-print: false
-# 2段階推定に基づく結果
 heckitmfx(fit_heckit) |> 
   mutate(across(where(is.numeric), .fns = \(x) round(x, 5)))
 #>         term unconditional conditional selection     beta    gamma
-#> 1        age      -0.03854     0.00095  -0.03950  0.00000 -0.05285
-#> 2       educ       0.20453     0.10670   0.09782  0.10907  0.13090
-#> 3      exper       0.13384     0.04166   0.09217  0.04389  0.12335
-#> 4 I(exper^2)      -0.00224    -0.00083  -0.00141 -0.00086 -0.00189
-#> 5      kids5      -0.63321     0.01566  -0.64887  0.00000 -0.86833
-#> 6    kids618       0.02626    -0.00065   0.02691  0.00000  0.03600
-#> 7   nwifeinc      -0.00877     0.00022  -0.00898  0.00000 -0.01202
+#> 1        age      -0.04270    -0.00187  -0.04083  0.00000 -0.05473
+#> 2       educ       0.19293     0.09981   0.09313  0.09554  0.12484
+#> 3      exper       0.13541     0.04136   0.09405  0.03704  0.12607
+#> 4    huswage      -0.00069     0.01837  -0.01906  0.01924 -0.02554
+#> 5 I(exper^2)      -0.00219    -0.00075  -0.00144 -0.00069 -0.00192
+#> 6      kids5      -0.67489    -0.02959  -0.64531  0.00000 -0.86503
+#> 7    kids618       0.02224     0.00098   0.02127  0.00000  0.02851
 ```
 
 なお、`heckitmfx()` 関数の出力の各列は次の値に対応しています。
@@ -339,11 +343,11 @@ heckitmfx(fit_heckit) |>
 ::: {.example name="ブートストラップ法を使った限界効果の標準誤差の推定" #exm-Heckit-example4}
 ここでは @exm-Heckit-example3 で推定したタイプIIトービットモデルの限界効果について、ブートストラップ法を使った標準誤差の推定と検定を試みたいと思います。まず、 @exm-Heckit-example1 で実装したモデル推定し、@exm-Heckit-example3 で実装した `heckitmfx()` 関数で限界効果を推定するまでの操作を、ひとまとめにしたラッパー関数を定義します。
 
-``` r
+```{r}
 est_heckit_mfx <- function(data){
   mod <- sampleSelection::heckit(
-    selection = lfp ~ educ + exper + I(exper^2) + nwifeinc + age + kids5 + kids618, # 就業決定関数
-    outcome =  lwage ~ educ + exper + I(exper^2),                                      # 賃金関数
+    selection = lfp ~ educ + exper + I(exper^2) + huswage + age + kids5 + kids618, # 就業決定関数
+    outcome = lwage ~ educ + exper + I(exper^2) + huswage,                         # 賃金関数
     data = data,
     method = "2step"
   )
@@ -365,15 +369,13 @@ heckitmfx_with_boot <- map(
   bind_rows(.id = "Iteration")
 
 tictoc::toc()
-#> 26.45 sec elapsed
+#> 15.565 sec elapsed
 ```
 
 ここでは [`ggdist::stat_pointinterval()`](https://mjskay.github.io/ggdist/reference/stat_pointinterval.html) 関数を使ってブートストラップ統計量の分布を可視化してみましょう。
 
 ```{r}
 #| echo: false
-# heckitmfx_with_boot |> write_csv(here::here("output", "heckitmfx_with_boot.csv"))
-# heckitmfx_with_boot <- read_csv(here::here("output", "heckitmfx_with_boot.csv"), show_col_types = FALSE)
 # heckitmfx_with_boot |> write_csv(here::here("result", "heckitmfx_with_boot_mroz.csv"))
 heckitmfx_with_boot <- read_csv(here::here("result", "heckitmfx_with_boot_mroz.csv"), show_col_types = FALSE)
 ```
