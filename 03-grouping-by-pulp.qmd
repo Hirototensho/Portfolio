@@ -1,0 +1,259 @@
+# プロジェクト2：制約付き最適化によるグループ分け
+
+## 背景
+
+　私が在籍している大学院で開講された講義において、グループワークを実施するに当たり、担当教員から約50名の受講生を5つの班に分けて、その結果を2日後までに報告するようにとの指示がありました。さらに、受講生の分け方について、先生から理由から次のような条件が課されていました（受講生の名前は全て仮名です）。
+
+1. A〜Eの全5班に分ける
+2. 1班につき7名または8名
+3. 各班に社会人経験のある学生が3名以上含まれる
+4. 以下の学生は、特に優秀であるためばらばらの班とする
+    - 松本, 山田, 山本, 前田, 井上
+5. 各班に理系学生が1名以上2名以下含まれる
+
+　上記の制約条件を全て満たしつつ、限られた時間で受講生を手作業で振り分けるのは困難だと考え、班分けを自動化することを考えました。具体的には、岩永ほか[-@岩永ほか2024]を参考に Python の [`PuLP`](https://coin-or.github.io/pulp/) ライブラリを用いて組合せ最適化問題として実装しました。  
+　次節では、当時実装したコードをもとにした実装例を紹介します。
+
+## 実装例
+
+　本節では、Python の `PuLP` ライブラリを用いてグループワークの班分けを実装します。
+
+```{.python filename="Pyhon"}
+# ! pip install pulp
+import numpy as np
+import pandas as pd
+import pulp # 線形計画法を解くためのライブラリ
+```
+
+ここでは班分けを行う学生の一覧は次のようなデータフレームとして与えられているとします。
+
+```{.python filename="Pyhon"}
+jukousei_df = pd.read_excel('data/グループ分けサンプルデータ.xlsx')
+
+print(jukousei_df.head())
+#>    氏名  社会人経験あり     文系     理系
+#> 0  佐藤         True       True     False
+#> 1  鈴木         True      False      True
+#> 2  高橋         True      False      True
+#> 3  田中        False      False      True
+#> 4  伊藤        False       True     False
+```
+
+ここで $x_{i, g}$ を学生 $i$ は班 $g$ に参加していれば $x_{i, g} = 1$、そうでなければ $x_{i, g} = 0$ となる変数であるとします。さらに
+$G$ を班のリスト、$I$ を学生のリストとし、$W$ を社会人経験のある学生のリスト、$S$ を優秀であると指名された学生のリスト、$R$ を理系学生のリストであるとすると、前節の制約条件は次式のように表すことが出来ます。
+
+$$
+\large 
+\begin{equation} 
+\begin{aligned}
+\text{s.t.}
+&\sum_{g \in G} x_{i, g} = 1,
+&&\normalsize{i \in I} &\\
+&\sum_{i \in I} x_{i, g} \in [7, 8],
+&&\normalsize{g \in G} &\\
+&\sum_{i \in W} x_{i, g} \ge 3
+&&\normalsize{g \in G} &\\
+&\sum_{i \in S} x_{i, g} \le 1
+&&\normalsize{g \in G} &\\
+&\sum_{i \in R} x_{i, g} \in [1, 2]
+&&\normalsize{g \in G} &\\
+\end{aligned}
+\end{equation} 
+$$ {#eq-group-work1}
+
+　@eq-group-work1 について少し説明しておくと、1行目は全ての受講生 $i$ がどれか1つの班に属することを意味し、班のリスト $G$ が5つの要素をもつことで学生が5つの班に分けられることを意味しています。2行目の条件が全ての班が $g$ が7〜8人の受講生で構成されることを意味し、3行目の条件がどの班 $g$ にも社会人経験のある学生  $i \in W$ が3名以上いることを意味します。さらに 4行目の条件が指名された受講生 $i \in S$ は各班に1人以下しかいないことを意味するので、この制約を守るには全ての班にバラバラに振り分けることになります。最後に、5行目の条件が理系学生 $i \in R$ が各班につき1名以上2名以下となるように制約しています。
+
+**`PuLP` ライブラリの導入と問題の定義**
+　
+　まずは `pulp` ライブラリを使い、班分けの問題を組合せ最適化問題として定義していきましょう。
+
+```{.python filename="Pyhon"}
+# 問題の宣言
+problem = pulp.LpProblem(
+    'GroupAssignmentProblem',
+    pulp.LpMaximize
+    )
+```
+
+
+```{.python filename="Pyhon"}
+# 受講生のリスト
+names_list = jukousei_df['氏名'].to_list()
+
+# A〜Eの全5班にわける
+# グループのリストを作成
+groups = ['A', 'B', 'C', 'D', 'E']
+print(len(groups))
+#> 5
+
+# 参加者とグループのペアのリスト
+participant_group = [(i, g) for i in names_list for g in groups]
+
+# 参加者をどのクラスに割り当てるかを変数xとして定義する
+# 各参加者が各グループに属するか否かを 0 or 1 で最適化するので、Binaryを指定
+x = pulp.LpVariable.dicts('x', participant_group, cat = 'Binary')
+```
+
+以下の処理は制約条件とは関係ありませんが、各班のメンバーが苗字の五十音順で偏よった結果として、「いつもと同じメンツ」という結果にならないように、実施しています。
+
+```{.python filename="Pyhon"}
+# 班の振り分けが名前順にならないように、並び順をランダム化する。
+jukousei_df = jukousei_df.sample(frac = 1, random_state = 123)
+```
+
+
+**制約条件の設定**
+
+　次に @eq-group-work1 の制約条件を Python のコードとして実装していきましょう。
+
+```{.python filename="Pyhon"}
+# 制約条件1' 各参加者は必ずどれか一つのグループに所属する
+for i in names_list:
+    problem.addConstraint(
+        pulp.lpSum([x[i,g] for g in groups])==1
+        )
+```
+
+
+```{.python filename="Pyhon"}
+# 制約条件2 1班につき7名または8名
+for g in groups:
+    problem.addConstraint(
+        pulp.lpSum([x[i,g] for i in names_list]) >= 7
+        )
+    problem.addConstraint(
+        pulp.lpSum([x[i,g] for i in names_list]) <= 8
+        )
+```
+
+
+```{.python filename="Pyhon"}
+# 制約条件3 各班に社会人（元も含む）が3名以上含まれる
+
+# 社会人である受講生のリスト
+shakaijin_list = jukousei_df.query('社会人経験あり')['氏名']
+
+for g in groups:
+    problem.addConstraint(
+        pulp.lpSum([x[i,g] for i in shakaijin_list]) >= 3
+        )
+```
+
+```{.python filename="Pyhon"}
+# 4. 以下の学生は、特に優秀であるためばらばらの班とする
+#   - 松本, 山田, 山本, 前田, 井上
+jukousei_df['指名学生'] = jukousei_df['氏名'].str.contains('松本|山田|山本|前田|井上')
+
+# 氏名された学生の名前をリストとして抽出
+selected_list = jukousei_df.query('指名学生')['氏名']
+
+# ここでは「指名された学生がばらばらの班になる」という条件を、
+# 「各グループに含まれる指名された学生の人数が1名以下になる」と翻訳しています。
+for g in groups:
+    problem.addConstraint(
+        pulp.lpSum([x[i,g] for i in selected_list]) <= 1
+        )
+```
+
+```{.python filename="Pyhon"}
+# 制約条件5 各班に理系学生が1名、2名以上含まれる
+rikei_list = jukousei_df.query('理系')['氏名']
+
+for g in groups:
+    problem.addConstraint(
+        pulp.lpSum([x[i,g] for i in rikei_list]) >= 1
+        )
+    problem.addConstraint(
+        pulp.lpSum([x[i,g] for i in rikei_list]) <= 2
+        )
+```
+
+**最適化問題を解く**
+
+　次に、`.solve()` メソッドを使って最適化問題の解を求めます。
+
+```{.python filename="Pyhon"}
+# Python
+status = problem.solve()
+```
+
+最適化問題の解を抽出し、結果をデータフレームの形に整形します。
+
+```{.python filename="Pyhon"}
+# Python
+result_array = [[key[0],key[1]] for key in x.keys() if x[key].value()==1]
+df_result = pd.DataFrame(result_array, columns = ['氏名','班番号'])
+
+jukousei_df2 = jukousei_df.sort_index()\
+  .merge(df_result, on = '氏名', how = 'left')
+
+print(jukousei_df2.head())
+#>    氏名  社会人経験あり     文系     理系   指名学生  班番号
+#> 0  佐藤          True       True    False      False   D
+#> 1  鈴木          True      False     True      False   A
+#> 2  高橋          True      False     True      False   A
+#> 3  田中         False      False     True      False   C
+#> 4  伊藤         False       True    False      False   D
+```
+
+**制約条件を満たしているかどうかの確認**
+
+　ここまでで班分けの結果が得られたので、指定された条件を満たしているかを確認しましょう。まずは所属する班を指定されていない学生の人数を調べます。0人であればOKです。
+
+```{.python filename="Pyhon"}
+jukousei_df2['班番号'].isna().sum()
+#> 0
+```
+
+同様に条件1〜5についても検証しておきましょう。
+
+```{.python filename="Pyhon"}
+# 各班に社会人経験のある学生が3名以上含まれる
+# 以下の学生はばらばらの班になる
+#  → 各班に含まれる指名された学生の人数が1人ならOK
+# 各班に経済学研究科学生が1名以上2名以下含まれる
+#  → 各班に含まれる経済学研究科の学生が1人or2人ならOK
+
+jukousei_df2['社会人経験なし'] = ~jukousei_df2['社会人経験あり']
+
+res = jukousei_df2.groupby('班番号')[['社会人経験あり', '理系', '指名学生']].sum()
+
+res['班員の総数'] = jukousei_df2.value_counts('班番号', sort = False)
+print(res)
+#>     社会人経験あり  理系  指名学生  班員の総数
+#> 班番号                          
+#> A              4       2         1           7
+#> B              4       2         1           7
+#> C              3       1         1           7
+#> D              4       1         1           7
+#> E              3       1         1           8
+```
+
+最後に、班のメンバーを表示するコードを実装しておきます。
+
+```{.python filename="Pyhon"}
+for g in ['A', 'B']:
+    han_list =  jukousei_df2.loc[jukousei_df2['班番号'] == g, '氏名'].to_list()
+    print(f'\n{g}班')
+    for i in han_list:
+        print(f' {i}')
+#> A班
+#>  鈴木
+#>  高橋
+#>  山本
+#>  阿部
+#>  石井
+#>  長谷川
+#>  近藤
+
+#> B班
+#>  渡辺
+#>  中村
+#>  松本
+#>  池田
+#>  橋本
+#>  石川
+#>  藤田
+```
+
+なお、ここでは紙幅の都合でA班とB班のみ表示してますが`for g in ['A', 'B']` の代わりに `for g in groups` とすることで、全ての班のメンバーを表示することができます。

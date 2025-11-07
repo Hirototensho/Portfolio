@@ -20,7 +20,6 @@ use("magrittr", c("%$%", "%T>%"))
 　個人 $i$ の賃金を $W_i$ として $\log W_i = \boldsymbol{X}_i^\mathsf{T}\boldsymbol{\beta} + \epsilon_{2i}$ で定まる回帰モデルを推定する問題を考えます。これは労働経済学ではミンサー型賃金関数と呼ばれ、年齢と所得の関係を調べる賃金プロファイルや、教育年数が所得に与える効果を調べるために用いられます[@川口2017; @大森_永瀬2021]。賃金関数の推定に当たっては、賃金 $W_i$ が就業者についてしか観測することができないことが問題となります（@fig-unobserved-wages）。  
 　このような状況は、就労状況に関する社会調査で頻繁に見られます。例えばリクルートワークス研究所が実施している[「全国就業実態パネル調査」](https://www.works-i.com/surveys/panel-surveys.html)でも、今現在働いている回答者は仕事からの年収について質問される一方で、今現在働いていない回答者は質問されない（設問の対象から外れる）ことになっています。
 
-
 ```{r}
 #| label: fig-unobserved-wages
 #| echo: false
@@ -85,7 +84,7 @@ $$ {#eq-Heckman2}
 ## Rによる実装
 
 ::: {.example name="Heckman の2段階推定法" #exm-Heckit-example1}
-ここでは `sampleSelection` パッケージの `Mroz87`データを例に、次に [`sampleSelection::heckit()`](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) 関数を使って Heckman の2段階推定法を実装します。`Mroz87` データは1975年に実施された Panel Study of Income Dynamics をもとにしたデータです。753名の既婚女性のデータが記録されており、内428名が就業者、残る325名が非就業者です。`Mroz87` には就業状態 `lfp や賃金 `wage`、教育年数 `educ` や労働市場経験年数 `exper`、配偶者の賃金 `huswage` が収録されており、今回はこれに Heckman の2段階推定を組み合わせて賃金関数を推定します。  
+ここでは `sampleSelection` パッケージの `Mroz87`データを例に、[`sampleSelection::heckit()`](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) 関数を使って Heckman の2段階推定法を実装します。`Mroz87` データは1975年に実施された Panel Study of Income Dynamics をもとにしたデータです。753名の既婚女性のデータが記録されており、内428名が就業者、残る325名が非就業者です。`Mroz87` には就業状態 `lfp や賃金 `wage`、教育年数 `educ` や労働市場経験年数 `exper`、配偶者の賃金 `huswage` が収録されており、今回はこれに Heckman の2段階推定を組み合わせて賃金関数を推定します。  
 　まずはサンプルデータを読み込みます。
 
 ``` r
@@ -110,7 +109,7 @@ Mroz87 |> mutate(miss_lwage = is.na(lwage)) |>
 ```
 
 
-次に [`sampleSelection::heckit()`](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) 関数でタイプIIトービットモデルを推定します。`heckit()` 関数を使うときは、`selection` 引数に就業決定関数の回帰式を指定し、`outcome` 引数に賃金関数の回帰式を指定します。今回は、典型的なミンサー型賃金関数で使われる教育年数 `educ` と経験年数 `exper` およびその2乗項に加えて配偶者の賃金 `huswage` を説明変数として使い、就業決定関数ではさらに年齢 `age` と子どもの人数（`kids5` および `kids618`）を説明変数として使用します。また、ここでは Heckman の2段階推定を使うので `method = "2step"` を指定します。
+次に [`sampleSelection::heckit()`](https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf) 関数でタイプIIトービットモデルを推定します。`heckit()` 関数を使うときは、`selection` 引数に就業決定関数の回帰式を指定し、`outcome` 引数に賃金関数の回帰式を指定します。今回は、典型的なミンサー型賃金関数で使われる教育年数 `educ` と経験年数 `exper` およびその2乗項に加えて配偶者の賃金 `huswage` を説明変数として使い、就業決定関数では、賃金関数の説明変数に加えて年齢 `age` と子どもの人数（`kids5` および `kids618`）を説明変数として使用します。また、ここでは Heckman の2段階推定を使うので `method = "2step"` を指定します。
 
 ``` r
 fit_heckit <- sampleSelection::heckit(

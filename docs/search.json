@@ -24,7 +24,7 @@
     "href": "index.html#目次",
     "title": "Data Science Portfolio",
     "section": "目次",
-    "text": "目次\n\n1  研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響\n2  タイプIIトービットモデル",
+    "text": "目次\n\n1  プロジェクト1：コロナ禍が若年層の雇用に与えた影響\n2  タイプIIトービットモデル",
     "crumbs": [
       "Readme"
     ]
@@ -32,51 +32,51 @@
   {
     "objectID": "01-covid-19-labor-market.html",
     "href": "01-covid-19-labor-market.html",
-    "title": "1  研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
+    "title": "1  プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
     "section": "",
     "text": "1.1 背景と目的\n2019年末に始まったコロナ禍は、企業が休業やリモートワークへの切り替えを余儀なくされるなど、雇用環境に大きな影響を与えました。特に新卒者の就職市場では、小売、レジャー、空運など外出制限の影響を受けやすい業界・業種で、採用計画の削減や採用中止が相次ぎました。\n　本研究では、コロナ禍以降に卒業した世代が賃金・就業・雇用形態の面で不利だったかを、明らかにすることを目的として、全国就業実態パネル調査（JPSED）で定量的評価を行いました。",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
     ]
   },
   {
     "objectID": "01-covid-19-labor-market.html#使用データと手法",
     "href": "01-covid-19-labor-market.html#使用データと手法",
-    "title": "1  研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
+    "title": "1  プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
     "section": "1.2 使用データと手法",
     "text": "1.2 使用データと手法\n　使用したデータは次のとおりです。\n\nデータ：国就業実態パネル調査（JPSED）の個票データのうち、2017年から2022年調査までの6年分を使用。\n2012年以降卒・35歳未満を分析対象とした（n=32,714）。\n\n分析に当たって3つのリサーチクエスチョンを設定し、それぞれ次のような分析手法を採用しました。\n\nRQ1（賃金への影響）: コロナ禍以降に就職した世代は、それ以前の世代と比べて賃金が低下したか。\n\n分析手法として、タイプIIトービットモデルを使用しました1。\n\nRQ2（就業状態への影響）: コロナ禍以降に就職した世代は、それ以前の世代と比べて就業率が低下したか。\n\n分析手法として、多項ロジットモデルを使用しました。\n\nRQ3（非正規雇用率への影響）: コロナ禍以降に就職した世代は、それ以前の世代と比べて非正規雇用率が上昇したか。\n\n分析手法として、プロビットモデルを使用しました。\n\n\nまた、回答者を卒業年にしたがって「2018年以前」「2019年（基準）」「2020年」「2021年」という4つのコホートに分けることで、コロナ禍以降に卒業した世代が雇用面で不利だったかを明らかにすることを目指しました。",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
     ]
   },
   {
     "objectID": "01-covid-19-labor-market.html#分析結果のポイント",
     "href": "01-covid-19-labor-market.html#分析結果のポイント",
-    "title": "1  研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
+    "title": "1  プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
     "section": "1.3 分析結果のポイント",
     "text": "1.3 分析結果のポイント\n　本研究では、2020年以降の学卒者の賃⾦は19年卒者と⽐べて有意に低下したとの結果が得られました。加えて、19年卒⼥性と⽐べて21年卒⼥性の⾮正規雇⽤率が有意に増加している事が分りました。新卒⼥性における⾮正規雇⽤率の増加は、就職氷河期の初期にも⾒られた現象であり、影響の⻑期化が懸念される結果でした。一方で、就業率に有意な変化は確認されず、短期的な就業意欲は大きく崩れていないと考えられます。",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
     ]
   },
   {
     "objectID": "01-covid-19-labor-market.html#考察",
     "href": "01-covid-19-labor-market.html#考察",
-    "title": "1  研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
+    "title": "1  プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
     "section": "1.4 考察",
     "text": "1.4 考察\n　本研究の結果は、コロナ禍以降に卒業した世代が賃金と雇用形態の面で不利を抱えていることを示唆するものであった。太田ほか(太田 et al., 2007)など、就職氷河期をめぐる先行研究で指摘されている初職効果の存在を踏まえると、影響の固定化を避けるための対策が必要になると考えられます。\n　一方、本研究の限界としては2022年調査分までのデータを利用していることが挙げられます。2022年卒以降コホートの追跡、長期の影響を分析することが今後の課題と言えます。また、2023年以降は新卒初任給の上昇傾向が見られるため、最新の調査を用いた分析では異なる結果が得られるのではないかと考えられます2。\n\n\n\n\n太田聰一, 玄田有史, and 近藤絢子. (2007). 「溶けない氷河―世代効果の展望：時代を背負う労働者」. 『日本労働研究雑誌』, 568, 97–112.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
     ]
   },
   {
     "objectID": "01-covid-19-labor-market.html#footnotes",
     "href": "01-covid-19-labor-market.html#footnotes",
-    "title": "1  研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
+    "title": "1  プロジェクト1：コロナ禍が若年層の雇用に与えた影響",
     "section": "",
     "text": "タイプIIトービットモデルについては Chapter 2 を参照してください。↩︎\n例えば「独立行政法人 労働政策研究・研修機構：新規学卒者の賃金」を参照。↩︎",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span>"
     ]
   },
   {
@@ -134,7 +134,7 @@
     "href": "02-typeII-tobit.html#rによる実装",
     "title": "2  タイプIIトービットモデル",
     "section": "2.5 Rによる実装",
-    "text": "2.5 Rによる実装\n\nExample 2.1 (Heckman の2段階推定法) ここでは sampleSelection パッケージの Mroz87データを例に、次に sampleSelection::heckit() 関数を使って Heckman の2段階推定法を実装します。Mroz87 データは1975年に実施された Panel Study of Income Dynamics をもとにしたデータです。753名の既婚女性のデータが記録されており、内428名が就業者、残る325名が非就業者です。Mroz87 には就業状態 lfp や賃金wage、教育年数educや労働市場経験年数exper、配偶者の賃金huswage` が収録されており、今回はこれに Heckman の2段階推定を組み合わせて賃金関数を推定します。\n　まずはサンプルデータを読み込みます。\ndata(\"Mroz87\", package = \"sampleSelection\")\nMroz87 |&gt; dim()\n#&gt; [1] 753  22\nMroz87 データでは非就業者の賃金は全て0（wage = 0）として記録されているのですが、ここでは処理を明確にするために非就業者の賃金は欠測値 NA に置き換え、さらに対数賃金を計算しておきます。\nMroz87 &lt;- Mroz87 |&gt; \n  naniar::replace_with_na(replace = list(wage = 0)) |&gt; \n  mutate(lwage = log(wage)) \n\n# 労働参加 lfp = 0 の回答者は全て lwage が観測されています。\nMroz87 |&gt; mutate(miss_lwage = is.na(lwage)) |&gt; \n  janitor::tabyl(lfp, miss_lwage)\n#&gt;  inlf FALSE TRUE\n#&gt;     0     0  325\n#&gt;     1   428    0\n次に sampleSelection::heckit() 関数でタイプIIトービットモデルを推定します。heckit() 関数を使うときは、selection 引数に就業決定関数の回帰式を指定し、outcome 引数に賃金関数の回帰式を指定します。今回は、典型的なミンサー型賃金関数で使われる教育年数 educ と経験年数 exper およびその2乗項に加えて配偶者の賃金 huswage を説明変数として使い、就業決定関数ではさらに年齢 age と子どもの人数（kids5 および kids618）を説明変数として使用します。また、ここでは Heckman の2段階推定を使うので method = \"2step\" を指定します。\nfit_heckit &lt;- sampleSelection::heckit(\n  selection = lfp ~ educ + exper + I(exper^2) + huswage + age + kids5 + kids618, # 就業決定関数\n  outcome = lwage ~ educ + exper + I(exper^2) + huswage,                         # 賃金関数\n  data = Mroz87,\n  method = \"2step\"\n)\nsummary(fit_heckit)\n#&gt; --------------------------------------------\n#&gt; Tobit 2 model (sample selection model)\n#&gt; 2-step Heckman / heckit estimation\n#&gt; 753 observations (325 censored and 428 observed)\n#&gt; 16 free parameters (df = 738)\n#&gt; Probit selection equation:\n#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    \n#&gt; (Intercept)  0.3606478  0.5057097   0.713   0.4760    \n#&gt; educ         0.1248354  0.0248294   5.028 6.24e-07 ***\n#&gt; exper        0.1260740  0.0186842   6.748 3.04e-11 ***\n#&gt; I(exper^2)  -0.0019245  0.0006001  -3.207   0.0014 ** \n#&gt; huswage     -0.0255439  0.0126406  -2.021   0.0437 *  \n#&gt; age         -0.0547300  0.0084083  -6.509 1.40e-10 ***\n#&gt; kids5       -0.8650260  0.1180205  -7.329 6.08e-13 ***\n#&gt; kids618      0.0285095  0.0434365   0.656   0.5118    \n#&gt; Outcome equation:\n#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    \n#&gt; (Intercept) -0.4472713  0.3122183  -1.433   0.1524    \n#&gt; educ         0.0955365  0.0168361   5.675    2e-08 ***\n#&gt; exper        0.0370433  0.0166119   2.230   0.0261 *  \n#&gt; I(exper^2)  -0.0006878  0.0004465  -1.540   0.1239    \n#&gt; huswage      0.0192415  0.0098639   1.951   0.0515 .  \n#&gt; Multiple R-Squared:0.1643,   Adjusted R-Squared:0.1544\n#&gt;    Error terms:\n#&gt;               Estimate Std. Error t value Pr(&gt;|t|)\n#&gt; invMillsRatio -0.06114    0.14170  -0.431    0.666\n#&gt; sigma          0.66171         NA      NA       NA\n#&gt; rho           -0.09240         NA      NA       NA\n#&gt; --------------------------------------------\n　推定結果は Probit selection equation が就業決定関数の結果を、Outcome equation が賃金関数の結果を表しています。今回の推定結果を見ると、妻の教育年数 educ と経験年数 exper が伸びるほど就業率と賃金が高くなり、配偶者の賃金 huswage が高くなるほど妻の就業率は低下するものの、賃金には影響を与えないことが読み取れます1。\n　ちなみに、sampleSelection::heckit(method = \"2step\") の結果に broom::tidy() を使うときは broom::tidy(fit_heckit$lm) で賃金関数の推定値を、broom::tidy(fit_heckit$probit) で就業決定関数の推定値を表示できるほか、texreg::screenreg() 関数にも対応しています。",
+    "text": "2.5 Rによる実装\n\nExample 2.1 (Heckman の2段階推定法) ここでは sampleSelection パッケージの Mroz87データを例に、sampleSelection::heckit() 関数を使って Heckman の2段階推定法を実装します。Mroz87 データは1975年に実施された Panel Study of Income Dynamics をもとにしたデータです。753名の既婚女性のデータが記録されており、内428名が就業者、残る325名が非就業者です。Mroz87 には就業状態 lfp や賃金wage、教育年数educや労働市場経験年数exper、配偶者の賃金huswage` が収録されており、今回はこれに Heckman の2段階推定を組み合わせて賃金関数を推定します。\n　まずはサンプルデータを読み込みます。\ndata(\"Mroz87\", package = \"sampleSelection\")\nMroz87 |&gt; dim()\n#&gt; [1] 753  22\nMroz87 データでは非就業者の賃金は全て0（wage = 0）として記録されているのですが、ここでは処理を明確にするために非就業者の賃金は欠測値 NA に置き換え、さらに対数賃金を計算しておきます。\nMroz87 &lt;- Mroz87 |&gt; \n  naniar::replace_with_na(replace = list(wage = 0)) |&gt; \n  mutate(lwage = log(wage)) \n\n# 労働参加 lfp = 0 の回答者は全て lwage が観測されています。\nMroz87 |&gt; mutate(miss_lwage = is.na(lwage)) |&gt; \n  janitor::tabyl(lfp, miss_lwage)\n#&gt;  inlf FALSE TRUE\n#&gt;     0     0  325\n#&gt;     1   428    0\n次に sampleSelection::heckit() 関数でタイプIIトービットモデルを推定します。heckit() 関数を使うときは、selection 引数に就業決定関数の回帰式を指定し、outcome 引数に賃金関数の回帰式を指定します。今回は、典型的なミンサー型賃金関数で使われる教育年数 educ と経験年数 exper およびその2乗項に加えて配偶者の賃金 huswage を説明変数として使い、就業決定関数では、賃金関数の説明変数に加えて年齢 age と子どもの人数（kids5 および kids618）を説明変数として使用します。また、ここでは Heckman の2段階推定を使うので method = \"2step\" を指定します。\nfit_heckit &lt;- sampleSelection::heckit(\n  selection = lfp ~ educ + exper + I(exper^2) + huswage + age + kids5 + kids618, # 就業決定関数\n  outcome = lwage ~ educ + exper + I(exper^2) + huswage,                         # 賃金関数\n  data = Mroz87,\n  method = \"2step\"\n)\nsummary(fit_heckit)\n#&gt; --------------------------------------------\n#&gt; Tobit 2 model (sample selection model)\n#&gt; 2-step Heckman / heckit estimation\n#&gt; 753 observations (325 censored and 428 observed)\n#&gt; 16 free parameters (df = 738)\n#&gt; Probit selection equation:\n#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    \n#&gt; (Intercept)  0.3606478  0.5057097   0.713   0.4760    \n#&gt; educ         0.1248354  0.0248294   5.028 6.24e-07 ***\n#&gt; exper        0.1260740  0.0186842   6.748 3.04e-11 ***\n#&gt; I(exper^2)  -0.0019245  0.0006001  -3.207   0.0014 ** \n#&gt; huswage     -0.0255439  0.0126406  -2.021   0.0437 *  \n#&gt; age         -0.0547300  0.0084083  -6.509 1.40e-10 ***\n#&gt; kids5       -0.8650260  0.1180205  -7.329 6.08e-13 ***\n#&gt; kids618      0.0285095  0.0434365   0.656   0.5118    \n#&gt; Outcome equation:\n#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    \n#&gt; (Intercept) -0.4472713  0.3122183  -1.433   0.1524    \n#&gt; educ         0.0955365  0.0168361   5.675    2e-08 ***\n#&gt; exper        0.0370433  0.0166119   2.230   0.0261 *  \n#&gt; I(exper^2)  -0.0006878  0.0004465  -1.540   0.1239    \n#&gt; huswage      0.0192415  0.0098639   1.951   0.0515 .  \n#&gt; Multiple R-Squared:0.1643,   Adjusted R-Squared:0.1544\n#&gt;    Error terms:\n#&gt;               Estimate Std. Error t value Pr(&gt;|t|)\n#&gt; invMillsRatio -0.06114    0.14170  -0.431    0.666\n#&gt; sigma          0.66171         NA      NA       NA\n#&gt; rho           -0.09240         NA      NA       NA\n#&gt; --------------------------------------------\n　推定結果は Probit selection equation が就業決定関数の結果を、Outcome equation が賃金関数の結果を表しています。今回の推定結果を見ると、妻の教育年数 educ と経験年数 exper が伸びるほど就業率と賃金が高くなり、配偶者の賃金 huswage が高くなるほど妻の就業率は低下するものの、賃金には影響を与えないことが読み取れます1。\n　ちなみに、sampleSelection::heckit(method = \"2step\") の結果に broom::tidy() を使うときは broom::tidy(fit_heckit$lm) で賃金関数の推定値を、broom::tidy(fit_heckit$probit) で就業決定関数の推定値を表示できるほか、texreg::screenreg() 関数にも対応しています。",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>タイプIIトービットモデル</span>"
     ]
@@ -160,11 +160,41 @@
     ]
   },
   {
+    "objectID": "03-grouping-by-pulp.html",
+    "href": "03-grouping-by-pulp.html",
+    "title": "3  プロジェクト2：制約付き最適化によるグループ分け",
+    "section": "",
+    "text": "3.1 背景\n私が在籍している大学院で開講された講義において、グループワークを実施するに当たり、担当教員から約50名の受講生を5つの班に分けて、その結果を2日後までに報告するようにとの指示がありました。さらに、受講生の分け方について、先生から理由から次のような条件が課されていました（受講生の名前は全て仮名です）。\n上記の制約条件を全て満たしつつ、限られた時間で受講生を手作業で振り分けるのは困難だと考え、班分けを自動化することを考えました。具体的には、岩永ほか(2024)を参考に Python の PuLP ライブラリを用いて組合せ最適化問題として実装しました。\n　次節では、当時実装したコードをもとにした実装例を紹介します。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>プロジェクト2：制約付き最適化によるグループ分け</span>"
+    ]
+  },
+  {
+    "objectID": "03-grouping-by-pulp.html#背景",
+    "href": "03-grouping-by-pulp.html#背景",
+    "title": "3  プロジェクト2：制約付き最適化によるグループ分け",
+    "section": "",
+    "text": "A〜Eの全5班に分ける\n1班につき7名または8名\n各班に社会人経験のある学生が3名以上含まれる\n以下の学生は、特に優秀であるためばらばらの班とする\n\n松本, 山田, 山本, 前田, 井上\n\n各班に理系学生が1名以上2名以下含まれる",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>プロジェクト2：制約付き最適化によるグループ分け</span>"
+    ]
+  },
+  {
+    "objectID": "03-grouping-by-pulp.html#実装例",
+    "href": "03-grouping-by-pulp.html#実装例",
+    "title": "3  プロジェクト2：制約付き最適化によるグループ分け",
+    "section": "3.2 実装例",
+    "text": "3.2 実装例\n　本節では、Python の PuLP ライブラリを用いてグループワークの班分けを実装します。\n\n\nPyhon\n\n# ! pip install pulp\nimport numpy as np\nimport pandas as pd\nimport pulp # 線形計画法を解くためのライブラリ\n\nここでは班分けを行う学生の一覧は次のようなデータフレームとして与えられているとします。\n\n\nPyhon\n\njukousei_df = pd.read_excel('data/グループ分けサンプルデータ.xlsx')\n\nprint(jukousei_df.head())\n#&gt;    氏名  社会人経験あり     文系     理系\n#&gt; 0  佐藤         True       True     False\n#&gt; 1  鈴木         True      False      True\n#&gt; 2  高橋         True      False      True\n#&gt; 3  田中        False      False      True\n#&gt; 4  伊藤        False       True     False\n\nここで \\(x_{i, g}\\) を学生 \\(i\\) は班 \\(g\\) に参加していれば \\(x_{i, g} = 1\\)、そうでなければ \\(x_{i, g} = 0\\) となる変数であるとします。さらに \\(G\\) を班のリスト、\\(I\\) を学生のリストとし、\\(W\\) を社会人経験のある学生のリスト、\\(S\\) を優秀であると指名された学生のリスト、\\(R\\) を理系学生のリストであるとすると、前節の制約条件は次式のように表すことが出来ます。\n\\[\n\\large\n\\begin{equation}\n\\begin{aligned}\n\\text{s.t.}\n&\\sum_{g \\in G} x_{i, g} = 1,\n&&\\normalsize{i \\in I} &\\\\\n&\\sum_{i \\in I} x_{i, g} \\in [7, 8],\n&&\\normalsize{g \\in G} &\\\\\n&\\sum_{i \\in W} x_{i, g} \\ge 3\n&&\\normalsize{g \\in G} &\\\\\n&\\sum_{i \\in S} x_{i, g} \\le 1\n&&\\normalsize{g \\in G} &\\\\\n&\\sum_{i \\in R} x_{i, g} \\in [1, 2]\n&&\\normalsize{g \\in G} &\\\\\n\\end{aligned}\n\\end{equation}\n\\tag{3.1}\\]\n　式 3.1 について少し説明しておくと、1行目は全ての受講生 \\(i\\) がどれか1つの班に属することを意味し、班のリスト \\(G\\) が5つの要素をもつことで学生が5つの班に分けられることを意味しています。2行目の条件が全ての班が \\(g\\) が7〜8人の受講生で構成されることを意味し、3行目の条件がどの班 \\(g\\) にも社会人経験のある学生 \\(i \\in W\\) が3名以上いることを意味します。さらに 4行目の条件が指名された受講生 \\(i \\in S\\) は各班に1人以下しかいないことを意味するので、この制約を守るには全ての班にバラバラに振り分けることになります。最後に、5行目の条件が理系学生 \\(i \\in R\\) が各班につき1名以上2名以下となるように制約しています。\nPuLP ライブラリの導入と問題の定義 　 　まずは pulp ライブラリを使い、班分けの問題を組合せ最適化問題として定義していきましょう。\n\n\nPyhon\n\n# 問題の宣言\nproblem = pulp.LpProblem(\n    'GroupAssignmentProblem',\n    pulp.LpMaximize\n    )\n\n\n\nPyhon\n\n# 受講生のリスト\nnames_list = jukousei_df['氏名'].to_list()\n\n# A〜Eの全5班にわける\n# グループのリストを作成\ngroups = ['A', 'B', 'C', 'D', 'E']\nprint(len(groups))\n#&gt; 5\n\n# 参加者とグループのペアのリスト\nparticipant_group = [(i, g) for i in names_list for g in groups]\n\n# 参加者をどのクラスに割り当てるかを変数xとして定義する\n# 各参加者が各グループに属するか否かを 0 or 1 で最適化するので、Binaryを指定\nx = pulp.LpVariable.dicts('x', participant_group, cat = 'Binary')\n\n以下の処理は制約条件とは関係ありませんが、各班のメンバーが苗字の五十音順で偏よった結果として、「いつもと同じメンツ」という結果にならないように、実施しています。\n\n\nPyhon\n\n# 班の振り分けが名前順にならないように、並び順をランダム化する。\njukousei_df = jukousei_df.sample(frac = 1, random_state = 123)\n\n制約条件の設定\n　次に 式 3.1 の制約条件を Python のコードとして実装していきましょう。\n\n\nPyhon\n\n# 制約条件1' 各参加者は必ずどれか一つのグループに所属する\nfor i in names_list:\n    problem.addConstraint(\n        pulp.lpSum([x[i,g] for g in groups])==1\n        )\n\n\n\nPyhon\n\n# 制約条件2 1班につき7名または8名\nfor g in groups:\n    problem.addConstraint(\n        pulp.lpSum([x[i,g] for i in names_list]) &gt;= 7\n        )\n    problem.addConstraint(\n        pulp.lpSum([x[i,g] for i in names_list]) &lt;= 8\n        )\n\n\n\nPyhon\n\n# 制約条件3 各班に社会人（元も含む）が3名以上含まれる\n\n# 社会人である受講生のリスト\nshakaijin_list = jukousei_df.query('社会人経験あり')['氏名']\n\nfor g in groups:\n    problem.addConstraint(\n        pulp.lpSum([x[i,g] for i in shakaijin_list]) &gt;= 3\n        )\n\n\n\nPyhon\n\n# 4. 以下の学生は、特に優秀であるためばらばらの班とする\n#   - 松本, 山田, 山本, 前田, 井上\njukousei_df['指名学生'] = jukousei_df['氏名'].str.contains('松本|山田|山本|前田|井上')\n\n# 氏名された学生の名前をリストとして抽出\nselected_list = jukousei_df.query('指名学生')['氏名']\n\n# ここでは「指名された学生がばらばらの班になる」という条件を、\n# 「各グループに含まれる指名された学生の人数が1名以下になる」と翻訳しています。\nfor g in groups:\n    problem.addConstraint(\n        pulp.lpSum([x[i,g] for i in selected_list]) &lt;= 1\n        )\n\n\n\nPyhon\n\n# 制約条件5 各班に理系学生が1名、2名以上含まれる\nrikei_list = jukousei_df.query('理系')['氏名']\n\nfor g in groups:\n    problem.addConstraint(\n        pulp.lpSum([x[i,g] for i in rikei_list]) &gt;= 1\n        )\n    problem.addConstraint(\n        pulp.lpSum([x[i,g] for i in rikei_list]) &lt;= 2\n        )\n\n最適化問題を解く\n　次に、.solve() メソッドを使って最適化問題の解を求めます。\n\n\nPyhon\n\n# Python\nstatus = problem.solve()\n\n最適化問題の解を抽出し、結果をデータフレームの形に整形します。\n\n\nPyhon\n\n# Python\nresult_array = [[key[0],key[1]] for key in x.keys() if x[key].value()==1]\ndf_result = pd.DataFrame(result_array, columns = ['氏名','班番号'])\n\njukousei_df2 = jukousei_df.sort_index()\\\n  .merge(df_result, on = '氏名', how = 'left')\n\nprint(jukousei_df2.head())\n#&gt;    氏名  社会人経験あり     文系     理系   指名学生  班番号\n#&gt; 0  佐藤          True       True    False      False   D\n#&gt; 1  鈴木          True      False     True      False   A\n#&gt; 2  高橋          True      False     True      False   A\n#&gt; 3  田中         False      False     True      False   C\n#&gt; 4  伊藤         False       True    False      False   D\n\n制約条件を満たしているかどうかの確認\n　ここまでで班分けの結果が得られたので、指定された条件を満たしているかを確認しましょう。まずは所属する班を指定されていない学生の人数を調べます。0人であればOKです。\n\n\nPyhon\n\njukousei_df2['班番号'].isna().sum()\n#&gt; 0\n\n同様に条件1〜5についても検証しておきましょう。\n\n\nPyhon\n\n# 各班に社会人経験のある学生が3名以上含まれる\n# 以下の学生はばらばらの班になる\n#  → 各班に含まれる指名された学生の人数が1人ならOK\n# 各班に経済学研究科学生が1名以上2名以下含まれる\n#  → 各班に含まれる経済学研究科の学生が1人or2人ならOK\n\njukousei_df2['社会人経験なし'] = ~jukousei_df2['社会人経験あり']\n\nres = jukousei_df2.groupby('班番号')[['社会人経験あり', '理系', '指名学生']].sum()\n\nres['班員の総数'] = jukousei_df2.value_counts('班番号', sort = False)\nprint(res)\n#&gt;     社会人経験あり  理系  指名学生  班員の総数\n#&gt; 班番号                          \n#&gt; A              4       2         1           7\n#&gt; B              4       2         1           7\n#&gt; C              3       1         1           7\n#&gt; D              4       1         1           7\n#&gt; E              3       1         1           8\n\n最後に、班のメンバーを表示するコードを実装しておきます。\n\n\nPyhon\n\nfor g in ['A', 'B']:\n    han_list =  jukousei_df2.loc[jukousei_df2['班番号'] == g, '氏名'].to_list()\n    print(f'\\n{g}班')\n    for i in han_list:\n        print(f' {i}')\n#&gt; A班\n#&gt;  鈴木\n#&gt;  高橋\n#&gt;  山本\n#&gt;  阿部\n#&gt;  石井\n#&gt;  長谷川\n#&gt;  近藤\n\n#&gt; B班\n#&gt;  渡辺\n#&gt;  中村\n#&gt;  松本\n#&gt;  池田\n#&gt;  橋本\n#&gt;  石川\n#&gt;  藤田\n\nなお、ここでは紙幅の都合でA班とB班のみ表示してますがfor g in ['A', 'B'] の代わりに for g in groups とすることで、全ての班のメンバーを表示することができます。\n\n\n\n\n岩永二郎, 石原響太, 田中一樹, and 西村直樹. (2024). 『Pythonではじめる数理最適化(第2版): ケーススタディでモデリングのスキルを身につけよう』. オーム社. https://www.jikkyo.co.jp/book/detail/13147",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>プロジェクト2：制約付き最適化によるグループ分け</span>"
+    ]
+  },
+  {
     "objectID": "90-references.html",
     "href": "90-references.html",
     "title": "References",
     "section": "",
-    "text": "Bodory, Hugo, Lorenzo Camponovo, Martin Huber, and Michael Lechner.\n(2020). The finite sample performance of inference methods for\npropensity score matching and weighting estimators. Journal of\nBusiness & Economic Statistics, 38(1), 183–200.\n\n\nEfron, Bradley, and Trevor Hastie. (2016). Computer age statistical\ninference. Cambridge University Press. https://web.stanford.edu/~hastie/CASI/\nInstitute of mathematical statistics monographs\n\n\nHoffmann, Rodolfo, and Ana Lucia Kassouf. (2005). Deriving conditional\nand unconditional marginal effects in log earnings equations estimated\nby heckman’s procedure. Applied Economics, 37(11),\n1303–1311.\n\n\nTaddy, Matt. (2019). Business data science: Combining machine\nlearning and economics to optimize, automate, and accelerate business\ndecisions. McGraw-Hill Education. https://www.oreilly.com/library/view/business-data-science/9781260452785/\n上杉隼人,\n井上毅郎〔訳〕(2020)『ビジネスデータサイエンスの教科書』すばる舎\n\n\nダハナ・ウィラワン ドニ, and 勝又壮太郎. (2023).\n『Rによるマーケティング・データ分析: 基礎から応用まで (ライブラリ\nデータ分析への招待 4)』. 新世社.\n\n\n大森義明, and 永瀬伸子. (2021). 『労働経済学をつかむ』. 有斐閣.\n\n\n太田聰一, 玄田有史, and 近藤絢子. (2007).\n「溶けない氷河―世代効果の展望：時代を背負う労働者」.\n『日本労働研究雑誌』, 568, 97–112.\n\n\n川口大司. (2017). 『労働経済学 – 理論と実証をつなぐ』. 有斐閣.\n\n\n春山鉄源. (2023). Pythonで学ぶ入門計量経済学. https://py4etrics.github.io/index.html\n\n\n末石直也. (2015). 『計量経済学：ミクロデータ分析へのいざない』.\n日本評論社.",
+    "text": "Bodory, Hugo, Lorenzo Camponovo, Martin Huber, and Michael Lechner.\n(2020). The finite sample performance of inference methods for\npropensity score matching and weighting estimators. Journal of\nBusiness & Economic Statistics, 38(1), 183–200.\n\n\nEfron, Bradley, and Trevor Hastie. (2016). Computer age statistical\ninference. Cambridge University Press. https://web.stanford.edu/~hastie/CASI/\nInstitute of mathematical statistics monographs\n\n\nHoffmann, Rodolfo, and Ana Lucia Kassouf. (2005). Deriving conditional\nand unconditional marginal effects in log earnings equations estimated\nby heckman’s procedure. Applied Economics, 37(11),\n1303–1311.\n\n\nTaddy, Matt. (2019). Business data science: Combining machine\nlearning and economics to optimize, automate, and accelerate business\ndecisions. McGraw-Hill Education. https://www.oreilly.com/library/view/business-data-science/9781260452785/\n上杉隼人,\n井上毅郎〔訳〕(2020)『ビジネスデータサイエンスの教科書』すばる舎\n\n\nダハナ・ウィラワン ドニ, and 勝又壮太郎. (2023).\n『Rによるマーケティング・データ分析: 基礎から応用まで (ライブラリ\nデータ分析への招待 4)』. 新世社.\n\n\n大森義明, and 永瀬伸子. (2021). 『労働経済学をつかむ』. 有斐閣.\n\n\n太田聰一, 玄田有史, and 近藤絢子. (2007).\n「溶けない氷河―世代効果の展望：時代を背負う労働者」.\n『日本労働研究雑誌』, 568, 97–112.\n\n\n岩永二郎, 石原響太, 田中一樹, and 西村直樹. (2024).\n『Pythonではじめる数理最適化(第2版):\nケーススタディでモデリングのスキルを身につけよう』. オーム社. https://www.jikkyo.co.jp/book/detail/13147\n\n\n川口大司. (2017). 『労働経済学 – 理論と実証をつなぐ』. 有斐閣.\n\n\n春山鉄源. (2023). Pythonで学ぶ入門計量経済学. https://py4etrics.github.io/index.html\n\n\n末石直也. (2015). 『計量経済学：ミクロデータ分析へのいざない』.\n日本評論社.",
     "crumbs": [
       "References"
     ]

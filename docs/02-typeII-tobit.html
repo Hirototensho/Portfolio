@@ -85,7 +85,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./90-references.html" rel="next">
+<link href="./03-grouping-by-pulp.html" rel="next">
 <link href="./01-covid-19-labor-market.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -204,13 +204,19 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-covid-19-labor-market.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-typeII-tobit.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-grouping-by-pulp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">プロジェクト2：制約付き最適化によるグループ分け</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -343,7 +349,7 @@ window.Quarto = {
 <section id="rによる実装" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="rによる実装"><span class="header-section-number">2.5</span> Rによる実装</h2>
 <div id="exm-Heckit-example1" class="example theorem">
-<p><span class="theorem-title"><strong>Example 2.1 (Heckman の2段階推定法)</strong></span> ここでは <code>sampleSelection</code> パッケージの <code>Mroz87</code>データを例に、次に <a href="https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf"><code>sampleSelection::heckit()</code></a> 関数を使って Heckman の2段階推定法を実装します。<code>Mroz87</code> データは1975年に実施された Panel Study of Income Dynamics をもとにしたデータです。753名の既婚女性のデータが記録されており、内428名が就業者、残る325名が非就業者です。<code>Mroz87</code> には就業状態 <code>lfp や賃金</code>wage<code>、教育年数</code>educ<code>や労働市場経験年数</code>exper<code>、配偶者の賃金</code>huswage` が収録されており、今回はこれに Heckman の2段階推定を組み合わせて賃金関数を推定します。<br>
+<p><span class="theorem-title"><strong>Example 2.1 (Heckman の2段階推定法)</strong></span> ここでは <code>sampleSelection</code> パッケージの <code>Mroz87</code>データを例に、<a href="https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf"><code>sampleSelection::heckit()</code></a> 関数を使って Heckman の2段階推定法を実装します。<code>Mroz87</code> データは1975年に実施された Panel Study of Income Dynamics をもとにしたデータです。753名の既婚女性のデータが記録されており、内428名が就業者、残る325名が非就業者です。<code>Mroz87</code> には就業状態 <code>lfp や賃金</code>wage<code>、教育年数</code>educ<code>や労働市場経験年数</code>exper<code>、配偶者の賃金</code>huswage` が収録されており、今回はこれに Heckman の2段階推定を組み合わせて賃金関数を推定します。<br>
 　まずはサンプルデータを読み込みます。</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Mroz87"</span>, <span class="at">package =</span> <span class="st">"sampleSelection"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Mroz87 <span class="sc">|&gt;</span> <span class="fu">dim</span>()</span>
@@ -359,7 +365,7 @@ window.Quarto = {
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  inlf FALSE TRUE</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     0     0  325</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     1   428    0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>次に <a href="https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf"><code>sampleSelection::heckit()</code></a> 関数でタイプIIトービットモデルを推定します。<code>heckit()</code> 関数を使うときは、<code>selection</code> 引数に就業決定関数の回帰式を指定し、<code>outcome</code> 引数に賃金関数の回帰式を指定します。今回は、典型的なミンサー型賃金関数で使われる教育年数 <code>educ</code> と経験年数 <code>exper</code> およびその2乗項に加えて配偶者の賃金 <code>huswage</code> を説明変数として使い、就業決定関数ではさらに年齢 <code>age</code> と子どもの人数（<code>kids5</code> および <code>kids618</code>）を説明変数として使用します。また、ここでは Heckman の2段階推定を使うので <code>method = "2step"</code> を指定します。</p>
+<p>次に <a href="https://cran.r-project.org/web/packages/sampleSelection/sampleSelection.pdf"><code>sampleSelection::heckit()</code></a> 関数でタイプIIトービットモデルを推定します。<code>heckit()</code> 関数を使うときは、<code>selection</code> 引数に就業決定関数の回帰式を指定し、<code>outcome</code> 引数に賃金関数の回帰式を指定します。今回は、典型的なミンサー型賃金関数で使われる教育年数 <code>educ</code> と経験年数 <code>exper</code> およびその2乗項に加えて配偶者の賃金 <code>huswage</code> を説明変数として使い、就業決定関数では、賃金関数の説明変数に加えて年齢 <code>age</code> と子どもの人数（<code>kids5</code> および <code>kids618</code>）を説明変数として使用します。また、ここでは Heckman の2段階推定を使うので <code>method = "2step"</code> を指定します。</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fit_heckit <span class="ot">&lt;-</span> sampleSelection<span class="sc">::</span><span class="fu">heckit</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">selection =</span> lfp <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> huswage <span class="sc">+</span> age <span class="sc">+</span> kids5 <span class="sc">+</span> kids618, <span class="co"># 就業決定関数</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> lwage <span class="sc">~</span> educ <span class="sc">+</span> exper <span class="sc">+</span> <span class="fu">I</span>(exper<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> huswage,                         <span class="co"># 賃金関数</span></span>
@@ -1241,13 +1247,13 @@ Taddy, Matt. (2019). <em>Business data science: Combining machine learning and e
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./01-covid-19-labor-market.html" class="pagination-link" aria-label="研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">研究プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span>
+      <a href="./01-covid-19-labor-market.html" class="pagination-link" aria-label="プロジェクト1：コロナ禍が若年層の雇用に与えた影響">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./90-references.html" class="pagination-link" aria-label="References">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./03-grouping-by-pulp.html" class="pagination-link" aria-label="プロジェクト2：制約付き最適化によるグループ分け">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">プロジェクト2：制約付き最適化によるグループ分け</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
