@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1&nbsp; プロジェクト1：コロナ禍が若年層の雇用に与えた影響 – Data Science Portfolio</title>
+<title>1&nbsp; プロジェクト1：留学生の生活実態調査 – Data Science Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -50,7 +50,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./02-typeII-tobit.html" rel="next">
+<link href="./02-covid-19-labor-market.html" rel="next">
 <link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -90,6 +90,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="theme.scss">
 </head>
@@ -103,7 +132,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-covid-19-labor-market.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-international-students.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：留学生の生活実態調査</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -139,20 +168,26 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-covid-19-labor-market.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span></a>
+  <a href="./01-international-students.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：留学生の生活実態調査</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-typeII-tobit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></a>
+  <a href="./02-covid-19-labor-market.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">プロジェクト2：コロナ禍が若年層の雇用に与えた影響</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-grouping-by-pulp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">プロジェクト2：制約付き最適化によるグループ分け</span></span></a>
+  <a href="./03-typeII-tobit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-grouping-by-pulp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">プロジェクト3：制約付き最適化によるグループ分け</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -173,17 +208,17 @@ div.csl-indent {
   <ul>
   <li><a href="#背景と目的" id="toc-背景と目的" class="nav-link active" data-scroll-target="#背景と目的"><span class="header-section-number">1.1</span> 背景と目的</a></li>
   <li><a href="#使用データと手法" id="toc-使用データと手法" class="nav-link" data-scroll-target="#使用データと手法"><span class="header-section-number">1.2</span> 使用データと手法</a></li>
-  <li><a href="#分析結果のポイント" id="toc-分析結果のポイント" class="nav-link" data-scroll-target="#分析結果のポイント"><span class="header-section-number">1.3</span> 分析結果のポイント</a></li>
+  <li><a href="#結果の概要" id="toc-結果の概要" class="nav-link" data-scroll-target="#結果の概要"><span class="header-section-number">1.3</span> 結果の概要</a></li>
   <li><a href="#考察" id="toc-考察" class="nav-link" data-scroll-target="#考察"><span class="header-section-number">1.4</span> 考察</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/01-covid-19-labor-market.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/01-international-students.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-covid-19-labor-market" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span></h1>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：留学生の生活実態調査</span></h1>
 </div>
 
 
@@ -202,55 +237,106 @@ div.csl-indent {
 
 <section id="背景と目的" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="背景と目的"><span class="header-section-number">1.1</span> 背景と目的</h2>
-<p>　2019年末に始まったコロナ禍は、企業が休業やリモートワークへの切り替えを余儀なくされるなど、雇用環境に大きな影響を与えました。特に新卒者の就職市場では、小売、レジャー、空運など外出制限の影響を受けやすい業界・業種で、採用計画の削減や採用中止が相次ぎました。<br>
-　本研究では、コロナ禍以降に卒業した世代が賃金・就業・雇用形態の面で不利だったかを、明らかにすることを目的として、全国就業実態パネル調査（JPSED）で定量的評価を行いました。</p>
+<p>　文部科学省「留学生30万人計画」のもとで、2008年以降留学生の受け入れが拡大し、2019年時点で日本国内の高等教育機関では約23万人の留学生を受け入れていた。しかし、2019年末に始まったCOVID-19の感染拡大によって、各国で渡航制限が実施などが実施されたことで2022年には約18万にまで減少しました<span class="citation" data-cites="白石2024">(<a href="90-references.html#ref-白石2024" role="doc-biblioref">白石, 2024</a>)</span>。当時筆者が在学していた私立大学にも多数の留学生が学んでいましたが、留学を中断せざるを得なくなった学生や、日本国内に留まったものの、孤立を経験した学生もいました。<br>
+　本プロジェクトは、以上のような背景のもとで、留学生の生活実態を明らかにするべくアンケート調査を実施したものです。</p>
 </section>
 <section id="使用データと手法" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="使用データと手法"><span class="header-section-number">1.2</span> 使用データと手法</h2>
-<p>　使用したデータは次のとおりです。</p>
-<ul>
-<li>データ：国就業実態パネル調査（JPSED）の個票データのうち、2017年から2022年調査までの6年分を使用。</li>
-<li>2012年以降卒・35歳未満を分析対象とした（n=32,714）。</li>
-</ul>
-<p>分析に当たって3つのリサーチクエスチョンを設定し、それぞれ次のような分析手法を採用しました。</p>
-<ol type="1">
-<li><strong>RQ1（賃金への影響）</strong>: コロナ禍以降に就職した世代は、それ以前の世代と比べて賃金が低下したか。
-<ul>
-<li>分析手法として、タイプIIトービットモデルを使用しました<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</li>
-</ul></li>
-<li><strong>RQ2（就業状態への影響）</strong>: コロナ禍以降に就職した世代は、それ以前の世代と比べて就業率が低下したか。
-<ul>
-<li>分析手法として、多項ロジットモデルを使用しました。</li>
-</ul></li>
-<li><strong>RQ3（非正規雇用率への影響）</strong>: コロナ禍以降に就職した世代は、それ以前の世代と比べて非正規雇用率が上昇したか。
-<ul>
-<li>分析手法として、プロビットモデルを使用しました。</li>
-</ul></li>
-</ol>
-<p>また、回答者を卒業年にしたがって「2018年以前」「2019年（基準）」「2020年」「2021年」という4つのコホートに分けることで、コロナ禍以降に卒業した世代が雇用面で不利だったかを明らかにすることを目指しました。</p>
+<p>　2022年9月から10月初頭にかけて、京都府内の私立大学の学生を対象としてWebアンケート調査を実施しました。回答者の募集は、留学生の多くが利用する学生寮に対するパンフレットの配布に加えて、教員の協力を得て講義などで回答を呼びかける形で実施し、回答は Googleフォームで受け付けました。重複回答を除いた有向回答数は251名で約半数の127名が留学生でした。分析手法として、度数分布表による設問毎の回答者数の集計を行いました。また、アンケート調査と並行して、回答にご協力いただいた留学生を対象として、留学中の生活状況や困りごとに関するヒアリングを実施しました。</p>
 </section>
-<section id="分析結果のポイント" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="分析結果のポイント"><span class="header-section-number">1.3</span> 分析結果のポイント</h2>
-<p>　本研究では、2020年以降の学卒者の賃⾦は19年卒者と⽐べて有意に低下したとの結果が得られました。加えて、19年卒⼥性と⽐べて21年卒⼥性の⾮正規雇⽤率が有意に増加している事が分りました。新卒⼥性における⾮正規雇⽤率の増加は、就職氷河期の初期にも⾒られた現象であり、影響の⻑期化が懸念される結果でした。一方で、就業率に有意な変化は確認されず、短期的な就業意欲は大きく崩れていないと考えられます。</p>
+<section id="結果の概要" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="結果の概要"><span class="header-section-number">1.3</span> 結果の概要</h2>
+<p>　本調査の主要な結果として、留学生は日本人学生と比べて</p>
+<ol type="1">
+<li>生活満足度が低い（<a href="#fig-international-students1" class="quarto-xref">図&nbsp;<span>1.1</span></a> (a)）</li>
+</ol>
+<ul>
+<li>（留学生の中央値 = 3, 日本人学生の中央値 = 4)</li>
+</ul>
+<ol start="2" type="1">
+<li>経済的に困難を感じている学生が多い（<a href="#fig-international-students1" class="quarto-xref">図&nbsp;<span>1.1</span></a> (b)）</li>
+<li>住居費が負担になっている学生が多い（<a href="#fig-international-students1" class="quarto-xref">図&nbsp;<span>1.1</span></a> (c)）</li>
+<li>困ったときに頼れる人が少ない（<a href="#fig-international-students1" class="quarto-xref">図&nbsp;<span>1.1</span></a> (d)）</li>
+</ol>
+<ul>
+<li>（留学生の中央値 = 3, 日本人学生の中央値 = 5)</li>
+</ul>
+<p>という傾向が確認され、留学生は日本人学生と比べて独自の生活上の困難を抱えていることが示唆されました。主要結果1, 2, 4については Wilcoxon の順位和検定で <span class="math inline">\(p &lt; 0.001\)</span> となり、統計的な有意差があることを確認しています。</p>
+<div id="fig-international-students1" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-international-students1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-international-students1" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-international-students1-1" class="quarto-float quarto-figure quarto-figure-center anchored" width="95%" data-fig-align="center">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-international-students1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Image/留学生調査_生活満足度.png" id="fig-international-students1-1" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" style="width:95.0%" data-ref-parent="fig-international-students1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-international-students1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-international-students1" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-international-students1-2" class="quarto-float quarto-figure quarto-figure-center anchored" width="95%" data-fig-align="center">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-international-students1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Image/留学生調査_経済的困難.png" id="fig-international-students1-2" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" style="width:95.0%" data-ref-parent="fig-international-students1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-international-students1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-international-students1" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-international-students1-3" class="quarto-float quarto-figure quarto-figure-center anchored" width="95%" data-fig-align="center">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-international-students1-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Image/留学生調査_最多支出.png" id="fig-international-students1-3" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" style="width:95.0%" data-ref-parent="fig-international-students1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-international-students1-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-international-students1" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-international-students1-4" class="quarto-float quarto-figure quarto-figure-center anchored" width="95%" data-fig-align="center">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-international-students1-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Image/留学生調査_頼れる人.png" id="fig-international-students1-4" class="img-fluid quarto-figure quarto-figure-center anchored figure-img" style="width:95.0%" data-ref-parent="fig-international-students1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-international-students1-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-international-students1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;1.1: 留学生の生活実態調査における回答傾向
+</figcaption>
+</figure>
+</div>
+<p>　留学生の半数以上が最多支出項目として住宅費をあげた（主要結果3）背景として、アンケート調査と並行して実施したヒアリングにおいて、学生寮を利用できれば住宅費を安く抑えられるものの、受け入れ人数の制約から2年次以上になると寮を出るよう求められることや、留学生が賃貸を借りる上での制度やコミュニケーションのハードルがあることで、住宅費負担が重くなるという証言がありました。<br>
+　本調査の結果は学内外の研究報告会にて報告させていただいたほか、ヒアリングの結果と合わせて大学当局に共有し、留学生の支援に役立てていただきました。</p>
 </section>
 <section id="考察" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="考察"><span class="header-section-number">1.4</span> 考察</h2>
-<p>　本研究の結果は、コロナ禍以降に卒業した世代が賃金と雇用形態の面で不利を抱えていることを示唆するものであった。太田ほか<span class="citation" data-cites="太田ほか2007">(<a href="90-references.html#ref-太田ほか2007" role="doc-biblioref">太田 et al., 2007</a>)</span>など、就職氷河期をめぐる先行研究で指摘されている初職効果の存在を踏まえると、影響の固定化を避けるための対策が必要になると考えられます。<br>
-　一方、本研究の限界としては2022年調査分までのデータを利用していることが挙げられます。2022年卒以降コホートの追跡、長期の影響を分析することが今後の課題と言えます。また、2023年以降は新卒初任給の上昇傾向が見られるため、最新の調査を用いた分析では異なる結果が得られるのではないかと考えられます<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。</p>
+<p>　本調査では、200名以上の学生から回答を集めることができ、学部生が実施するアンケート調査としては成功だっと考えています。その一方で、調査の設計段階でリサーチ・クエスチョンが不明確だったことで設問に不備が残り、十分に説得力のある政策提案に繋げられなかったことなど、反省点の残る調査でもありました。また、2022年秋の一時点における調査という性質上、コロナ禍特有の困難に踏み込めなかったことも悔やまれますし、留学生を取り巻く状況が再び変化した2023年以降の状況を調査することは、今後の課題です。<br>
+　以上のようにいくつもの反省点はあったものの、ヒアリングを通じてアンケート調査に協力していただいた学生と直接会う機会もあり、データ分析には身近な人たちの課題を解決できる力があると実感する経験となりました。後に、<a href="02-covid-19-labor-market.html" class="quarto-xref"><span>Chapter 2</span></a> で取り上げる「コロナ禍が若年層の雇用に与えた影響」の分析という研究テーマにつながり、大学院に進学するきっかけになったのは間違いありません。</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
-<div id="ref-太田ほか2007" class="csl-entry" role="listitem">
-太田聰一, 玄田有史, and 近藤絢子. (2007). 「溶けない氷河―世代効果の展望：時代を背負う労働者」. <em>『日本労働研究雑誌』</em>, <em>568</em>, 97–112.
+<div id="ref-白石2024" class="csl-entry" role="listitem">
+白石勝己. (2024). 「コロナ禍の前後における外国人留学生数の推移国・地域別分析」. <em>『アジアの友』</em>, <em>558</em>, 18–24.
 </div>
 </div>
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn1"><p>タイプIIトービットモデルについては <a href="02-typeII-tobit.html" class="quarto-xref"><span>Chapter 2</span></a> を参照してください。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>例えば<a href="https://www.jil.go.jp/kokunai/statistics/shuyo/0303.html">「独立行政法人 労働政策研究・研修機構：新規学卒者の賃金」</a>を参照。<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
 </section>
 
 </main> <!-- /main -->
@@ -660,8 +746,8 @@ div.csl-indent {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./02-typeII-tobit.html" class="pagination-link" aria-label="タイプIIトービットモデル">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02-covid-19-labor-market.html" class="pagination-link" aria-label="プロジェクト2：コロナ禍が若年層の雇用に与えた影響">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">プロジェクト2：コロナ禍が若年層の雇用に与えた影響</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -670,4 +756,4 @@ div.csl-indent {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/01-covid-19-labor-market.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/01-international-students.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

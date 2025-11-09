@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; プロジェクト2：制約付き最適化によるグループ分け – Data Science Portfolio</title>
+<title>4&nbsp; プロジェクト3：制約付き最適化によるグループ分け – Data Science Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -86,7 +86,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./90-references.html" rel="next">
-<link href="./02-typeII-tobit.html" rel="prev">
+<link href="./03-typeII-tobit.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -167,7 +167,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-grouping-by-pulp.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">プロジェクト2：制約付き最適化によるグループ分け</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-grouping-by-pulp.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">プロジェクト3：制約付き最適化によるグループ分け</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -203,20 +203,26 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-covid-19-labor-market.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：コロナ禍が若年層の雇用に与えた影響</span></span></a>
+  <a href="./01-international-students.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">プロジェクト1：留学生の生活実態調査</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-typeII-tobit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></a>
+  <a href="./02-covid-19-labor-market.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">プロジェクト2：コロナ禍が若年層の雇用に与えた影響</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-grouping-by-pulp.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">プロジェクト2：制約付き最適化によるグループ分け</span></span></a>
+  <a href="./03-typeII-tobit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-grouping-by-pulp.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">プロジェクト3：制約付き最適化によるグループ分け</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -235,17 +241,17 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#背景" id="toc-背景" class="nav-link active" data-scroll-target="#背景"><span class="header-section-number">3.1</span> 背景</a></li>
-  <li><a href="#実装例" id="toc-実装例" class="nav-link" data-scroll-target="#実装例"><span class="header-section-number">3.2</span> 実装例</a></li>
+  <li><a href="#背景" id="toc-背景" class="nav-link active" data-scroll-target="#背景"><span class="header-section-number">4.1</span> 背景</a></li>
+  <li><a href="#実装例" id="toc-実装例" class="nav-link" data-scroll-target="#実装例"><span class="header-section-number">4.2</span> 実装例</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/03-grouping-by-pulp.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/04-grouping-by-pulp.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">プロジェクト2：制約付き最適化によるグループ分け</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">プロジェクト3：制約付き最適化によるグループ分け</span></h1>
 </div>
 
 
@@ -262,8 +268,8 @@ window.Quarto = {
 </header>
 
 
-<section id="背景" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="背景"><span class="header-section-number">3.1</span> 背景</h2>
+<section id="背景" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="背景"><span class="header-section-number">4.1</span> 背景</h2>
 <p>　私が在籍している大学院で開講された講義において、グループワークを実施するに当たり、担当教員から約50名の受講生を5つの班に分けて、その結果を2日後までに報告するようにとの指示がありました。さらに、受講生の分け方について、先生から理由から次のような条件が課されていました（受講生の名前は全て仮名です）。</p>
 <ol type="1">
 <li>A〜Eの全5班に分ける</li>
@@ -278,8 +284,8 @@ window.Quarto = {
 <p>　上記の制約条件を全て満たしつつ、限られた時間で受講生を手作業で振り分けるのは困難だと考え、班分けを自動化することを考えました。具体的には、岩永ほか<span class="citation" data-cites="岩永ほか2024">(<a href="90-references.html#ref-岩永ほか2024" role="doc-biblioref">2024</a>)</span>を参考に Python の <a href="https://coin-or.github.io/pulp/"><code>PuLP</code></a> ライブラリを用いて組合せ最適化問題として実装しました。<br>
 　次節では、当時実装したコードをもとにした実装例を紹介します。</p>
 </section>
-<section id="実装例" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="実装例"><span class="header-section-number">3.2</span> 実装例</h2>
+<section id="実装例" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="実装例"><span class="header-section-number">4.2</span> 実装例</h2>
 <p>　本節では、Python の <code>PuLP</code> ライブラリを用いてグループワークの班分けを実装します。</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -323,8 +329,8 @@ window.Quarto = {
 &amp;&amp;\normalsize{g \in G} &amp;\\
 \end{aligned}
 \end{equation}
-\tag{3.1}\]</span></span></p>
-<p>　<a href="#eq-group-work1" class="quarto-xref">式&nbsp;<span>3.1</span></a> について少し説明しておくと、1行目は全ての受講生 <span class="math inline">\(i\)</span> がどれか1つの班に属することを意味し、班のリスト <span class="math inline">\(G\)</span> が5つの要素をもつことで学生が5つの班に分けられることを意味しています。2行目の条件が全ての班が <span class="math inline">\(g\)</span> が7〜8人の受講生で構成されることを意味し、3行目の条件がどの班 <span class="math inline">\(g\)</span> にも社会人経験のある学生 <span class="math inline">\(i \in W\)</span> が3名以上いることを意味します。さらに 4行目の条件が指名された受講生 <span class="math inline">\(i \in S\)</span> は各班に1人以下しかいないことを意味するので、この制約を守るには全ての班にバラバラに振り分けることになります。最後に、5行目の条件が理系学生 <span class="math inline">\(i \in R\)</span> が各班につき1名以上2名以下となるように制約しています。</p>
+\tag{4.1}\]</span></span></p>
+<p>　<a href="#eq-group-work1" class="quarto-xref">式&nbsp;<span>4.1</span></a> について少し説明しておくと、1行目は全ての受講生 <span class="math inline">\(i\)</span> がどれか1つの班に属することを意味し、班のリスト <span class="math inline">\(G\)</span> が5つの要素をもつことで学生が5つの班に分けられることを意味しています。2行目の条件が全ての班が <span class="math inline">\(g\)</span> が7〜8人の受講生で構成されることを意味し、3行目の条件がどの班 <span class="math inline">\(g\)</span> にも社会人経験のある学生 <span class="math inline">\(i \in W\)</span> が3名以上いることを意味します。さらに 4行目の条件が指名された受講生 <span class="math inline">\(i \in S\)</span> は各班に1人以下しかいないことを意味するので、この制約を守るには全ての班にバラバラに振り分けることになります。最後に、5行目の条件が理系学生 <span class="math inline">\(i \in R\)</span> が各班につき1名以上2名以下となるように制約しています。</p>
 <p><strong><code>PuLP</code> ライブラリの導入と問題の定義</strong> 　 　まずは <code>pulp</code> ライブラリを使い、班分けの問題を組合せ最適化問題として定義していきましょう。</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -365,7 +371,7 @@ window.Quarto = {
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>jukousei_df <span class="op">=</span> jukousei_df.sample(frac <span class="op">=</span> <span class="dv">1</span>, random_state <span class="op">=</span> <span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>制約条件の設定</strong></p>
-<p>　次に <a href="#eq-group-work1" class="quarto-xref">式&nbsp;<span>3.1</span></a> の制約条件を Python のコードとして実装していきましょう。</p>
+<p>　次に <a href="#eq-group-work1" class="quarto-xref">式&nbsp;<span>4.1</span></a> の制約条件を Python のコードとして実装していきましょう。</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Pyhon</strong></pre>
@@ -939,8 +945,8 @@ window.Quarto = {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./02-typeII-tobit.html" class="pagination-link" aria-label="タイプIIトービットモデル">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span>
+      <a href="./03-typeII-tobit.html" class="pagination-link" aria-label="タイプIIトービットモデル">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">タイプIIトービットモデル</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -954,4 +960,4 @@ window.Quarto = {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/03-grouping-by-pulp.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Hirototensho/Portfolio/blob/main/04-grouping-by-pulp.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
