@@ -14,5 +14,7 @@ date-format: "YYYY-MM-DD"
 
 ## 目次
 
+- [@sec-international-students]
 - [@sec-covid-19-labor-market]
 - [@sec-type2-tobit]
+- [@sec-grouping-by-pulp]
